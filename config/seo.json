@@ -1,20 +1,20 @@
 {
-  "title": "Hung Pr0 n0 1 Commerce",
-  "titleTemplate": "%s - Storefront",
-  "description": "Hung Pr0 n0 1 Commerce",
+  "title": "Hung Commerce",
+  "titleTemplate": "%s",
+  "description": "Hung Commerce",
   "openGraph": {
-    "title": "Hung Pr0 n0 1 Commerce",
-    "description": "Hung Pr0 n0 1 Commerce",
+    "title": "Hung Commerce",
+    "description": "Hung Commerce",
     "type": "website",
     "locale": "en_IE",
     "url": "/",
-    "site_name": "Hung Pr0 n0 1 Commerce",
+    "site_name": "Hung Commerce",
     "images": [
       {
         "url": "/card.png",
         "width": 800,
         "height": 600,
-        "alt": "Hung Pr0 n0 1 Commerce"
+        "alt": "Hung Commerce"
       }
     ]
   },

@@ -53,7 +53,7 @@ export default function Search({ categories, brands }: SearchPropsType) {
     sort: typeof sort === 'string' ? sort : '',
     locale,
   })
-
+  
   const handleClick = (event: any, filter: string) => {
     if (filter !== activeFilter) {
       setToggleFilter(true)
