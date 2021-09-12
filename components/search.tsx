@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import type { SearchPropsType } from '@lib/search-props'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 import { Layout } from '@components/common'
@@ -13,6 +13,7 @@ import useSearch from '@framework/product/use-search'
 
 import getSlug from '@lib/get-slug'
 import rangeMap from '@lib/range-map'
+import { data } from '@lib/data/product'
 
 const SORT = {
   'trending-desc': 'Trending',
@@ -27,6 +28,10 @@ import {
   getDesignerPath,
   useSearchMeta,
 } from '@lib/search'
+
+interface ProductData {
+  products: Product[]
+}
 
 export default function Search({ categories, brands }: SearchPropsType) {
   const [activeFilter, setActiveFilter] = useState('')
@@ -46,14 +51,26 @@ export default function Search({ categories, brands }: SearchPropsType) {
     (b: any) => getSlug(b.node.path) === `brands/${brand}`
   )?.node
 
-  const { data } = useSearch({
-    search: typeof q === 'string' ? q : '',
-    categoryId: activeCategory?.id,
-    brandId: (activeBrand as any)?.entityId,
-    sort: typeof sort === 'string' ? sort : '',
-    locale,
-  })
-  
+  // const { data } = useSearch({
+  //   search: typeof q === 'string' ? q : '',
+  //   categoryId: activeCategory?.id,
+  //   brandId: (activeBrand as any)?.entityId,
+  //   sort: typeof sort === 'string' ? sort : '',
+  //   locale,
+  // });
+
+  const [productData, setProductData] = useState<ProductData | null>(null)
+
+  useEffect(() => {
+    let timer1 = setTimeout(() => {
+      setProductData(data);
+    }, 3000)
+
+    return () => {
+      clearTimeout(timer1)
+    }
+  }, [])
+
   const handleClick = (event: any, filter: string) => {
     if (filter !== activeFilter) {
       setToggleFilter(true)
@@ -312,9 +329,9 @@ export default function Search({ categories, brands }: SearchPropsType) {
               )}
             </div>
           )}
-          {data ? (
+          {productData ? (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {data.products.map((product: Product) => (
+              {productData.products.map((product: Product) => (
                 <ProductCard
                   variant="simple"
                   key={product.path}

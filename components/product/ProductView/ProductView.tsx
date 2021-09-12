@@ -12,7 +12,7 @@ import ProductSidebar from '../ProductSidebar'
 import ProductTag from '../ProductTag'
 interface ProductViewProps {
   product: Product
-  relatedProducts: Product[]
+  relatedProducts?: Product[]
 }
 
 const ProductView: FC<ProductViewProps> = ({ product, relatedProducts }) => {
@@ -64,7 +64,7 @@ const ProductView: FC<ProductViewProps> = ({ product, relatedProducts }) => {
         <section className="py-12 px-6 mb-10">
           <Text variant="sectionHeading">Related Products</Text>
           <div className={s.relatedProductsGrid}>
-            {relatedProducts.map((p) => (
+            {relatedProducts && relatedProducts.map((p) => (
               <div
                 key={p.path}
                 className="animated fadeIn bg-accent-0 border border-accent-2"
