@@ -20,6 +20,18 @@ const links = [
     name: 'Home',
     url: '/',
   },
+  {
+    name: 'Shop',
+    url: '/shop',
+  },
+  {
+    name: 'About',
+    url: '/about',
+  },
+  {
+    name: 'Contact',
+    url: '/contact',
+  },
 ]
 
 const Footer: FC<Props> = ({ className, pages }) => {

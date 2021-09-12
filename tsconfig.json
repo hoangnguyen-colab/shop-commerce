@@ -23,6 +23,7 @@
       "@components/*": ["components/*"],
       "@commerce": ["framework/commerce"],
       "@commerce/*": ["framework/commerce/*"],
+      "@contexts/*": ["contexts/*"],
       "@framework": ["framework/local"],
       "@framework/*": ["framework/local/*"]
     }
@@ -31,9 +32,5 @@
   "exclude": [
     "node_modules",
     "./framework/bigcommerce",
-    "./framework/shopify",
-    "./framework/swell",
-    "./framework/vendure",
-    "./framework/saleor"
   ]
 }

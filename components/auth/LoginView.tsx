@@ -16,39 +16,38 @@ const LoginView: FC<Props> = () => {
   const [disabled, setDisabled] = useState(false)
   const { setModalView, closeModal } = useUI()
 
-  const login = useLogin()
 
   const handleLogin = async (e: React.SyntheticEvent<EventTarget>) => {
     e.preventDefault()
 
     if (!dirty && !disabled) {
-      setDirty(true)
-      handleValidation()
+      setDirty(true);
+      handleValidation();
     }
 
     try {
-      setLoading(true)
-      setMessage('')
-      await login({
-        email,
-        password,
-      })
-      setLoading(false)
-      closeModal()
+      setLoading(true);
+      setMessage('');
+
+      console.log({
+          email,
+          password,
+        });
+
+      setLoading(false);
+      // closeModal();
     } catch ({ errors }) {
-      setMessage(errors[0].message)
+      setMessage(errors[0]?.message)
       setLoading(false)
       setDisabled(false)
     }
   }
 
   const handleValidation = useCallback(() => {
-    // Test for Alphanumeric password
     const validPassword = /^(?=.*[a-zA-Z])(?=.*[0-9])/.test(password)
 
-    // Unable to send form unless fields are valid.
     if (dirty) {
-      setDisabled(!validate(email) || password.length < 7 || !validPassword)
+      setDisabled(!email || !password || password.length < 7 || !validPassword)
     }
   }, [email, password, dirty])
 
@@ -76,8 +75,8 @@ const LoginView: FC<Props> = () => {
             </a>
           </div>
         )}
-        <Input type="email" placeholder="Email" onChange={setEmail} />
-        <Input type="password" placeholder="Password" onChange={setPassword} />
+        <Input type="email" placeholder="Email" onChange={setEmail} required/>
+        <Input type="password" placeholder="Password" onChange={setPassword} required/>
 
         <Button
           variant="slim"
