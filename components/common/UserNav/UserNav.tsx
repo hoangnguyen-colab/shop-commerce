@@ -1,9 +1,7 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import Link from 'next/link'
 import cn from 'classnames'
-import type { LineItem } from '@commerce/types/cart'
-import useCart from '@framework/cart/use-cart'
-import useCustomer from '@framework/customer/use-customer'
+import type { LineItem } from '@lib/types/cart'
 import { Avatar } from '@components/common'
 import { Heart, Bag } from '@components/icons'
 import { useUI } from '@components/ui/context'
@@ -18,10 +16,9 @@ interface Props {
 const countItem = (count: number, item: LineItem) => count + item.quantity
 
 const UserNav: FC<Props> = ({ className }) => {
-  const { data } = useCart()
-  const { data: customer } = useCustomer()
   const { toggleSidebar, closeSidebarIfPresent, openModal } = useUI()
-  const itemsCount = data?.lineItems.reduce(countItem, 0) ?? 0
+  const [customer, setCustomer] = useState(false);
+  // const itemsCount = data?.lineItems.reduce(countItem, 0) ?? 0
 
   return (
     <nav className={cn(s.root, className)}>
@@ -34,7 +31,7 @@ const UserNav: FC<Props> = ({ className }) => {
             aria-label="Cart"
           >
             <Bag />
-            {itemsCount > 0 && <span className={s.bagCount}>{itemsCount}</span>}
+            {/* {itemsCount > 0 && <span className={s.bagCount}>{itemsCount}</span>} */}
           </Button>
         </li>
           <li className={s.item}>

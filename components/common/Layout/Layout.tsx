@@ -2,11 +2,11 @@ import cn from 'classnames'
 import React, { FC } from 'react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
-import { CommerceProvider } from '@framework'
+// import CommerceProvider from '@framework/provider'
 import { useUI } from '@components/ui/context'
-import type { Page } from '@commerce/types/page'
+import type { Page } from '@lib/types/page'
 import { Navbar, Footer } from '@components/common'
-import type { Category } from '@commerce/types/site'
+import type { Category } from '@lib/types/site'
 import ShippingView from '@components/checkout/ShippingView'
 import CartSidebarView from '@components/cart/CartSidebarView'
 import { useAcceptCookies } from '@lib/hooks/useAcceptCookies'
@@ -102,7 +102,7 @@ const Layout: FC<Props> = ({
   }))
 
   return (
-    <CommerceProvider locale={locale}>
+    // <CommerceProvider locale={locale}>
       <div className={cn(s.root)}>
         <Navbar links={navBarlinks} />
         <main className="fit">{children}</main>
@@ -119,7 +119,7 @@ const Layout: FC<Props> = ({
           }
         />
       </div>
-    </CommerceProvider>
+    // </CommerceProvider>
   )
 }
 

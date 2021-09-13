@@ -7,10 +7,8 @@ import { Trash } from '@components/icons'
 import { Button, Text } from '@components/ui'
 
 import { useUI } from '@components/ui/context'
-import type { Product } from '@commerce/types/product'
-import usePrice from '@framework/product/use-price'
-import useAddItem from '@framework/cart/use-add-item'
-import useRemoveItem from '@framework/wishlist/use-remove-item'
+import type { Product } from '@lib/types/product'
+import usePrice from '@lib/use-price'
 
 interface Props {
   product: Product
@@ -25,13 +23,11 @@ const WishlistCard: FC<Props> = ({ product }) => {
     currencyCode: product.price?.currencyCode!,
   })
   // @ts-ignore Wishlist is not always enabled
-  const removeItem = useRemoveItem({ wishlist: { includeProducts: true } })
   const [loading, setLoading] = useState(false)
   const [removing, setRemoving] = useState(false)
 
   // TODO: fix this missing argument issue
   /* @ts-ignore */
-  const addItem = useAddItem()
   const { openSidebar } = useUI()
 
   const handleRemove = async () => {
@@ -40,7 +36,7 @@ const WishlistCard: FC<Props> = ({ product }) => {
     try {
       // If this action succeeds then there's no need to do `setRemoving(true)`
       // because the component will be removed from the view
-      await removeItem({ id: product.id! })
+      // await removeItem({ id: product.id! })
     } catch (error) {
       setRemoving(false)
     }
@@ -48,10 +44,10 @@ const WishlistCard: FC<Props> = ({ product }) => {
   const addToCart = async () => {
     setLoading(true)
     try {
-      await addItem({
-        productId: String(product.id),
-        variantId: String(product.variants[0].id),
-      })
+      // await addItem({
+      //   productId: String(product.id),
+      //   variantId: String(product.variants[0].id),
+      // })
       openSidebar()
       setLoading(false)
     } catch (err) {

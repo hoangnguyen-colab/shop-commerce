@@ -2,12 +2,8 @@ import React, { FC, useState } from 'react'
 import cn from 'classnames'
 import { useUI } from '@components/ui'
 import { Heart } from '@components/icons'
-import useAddItem from '@framework/wishlist/use-add-item'
-import useCustomer from '@framework/customer/use-customer'
-import useWishlist from '@framework/wishlist/use-wishlist'
-import useRemoveItem from '@framework/wishlist/use-remove-item'
 import s from './WishlistButton.module.css'
-import type { Product, ProductVariant } from '@commerce/types/product'
+import type { Product, ProductVariant } from '@lib/types/product'
 
 type Props = {
   productId: Product['id']
@@ -20,12 +16,10 @@ const WishlistButton: FC<Props> = ({
   className,
   ...props
 }) => {
-  const { data } = useWishlist()
-  const addItem = useAddItem()
-  const removeItem = useRemoveItem()
-  const { data: customer } = useCustomer()
-  const { openModal, setModalView } = useUI()
-  const [loading, setLoading] = useState(false)
+  const  data  = null;
+  const { openModal, setModalView } = useUI();
+  const [loading, setLoading] = useState(false);
+  const [customer, setCustomer] = useState(false);
 
   // @ts-ignore Wishlist is not always enabled
   const itemInWishlist = data?.items?.find(
@@ -50,12 +44,12 @@ const WishlistButton: FC<Props> = ({
 
     try {
       if (itemInWishlist) {
-        await removeItem({ id: itemInWishlist.id! })
+        // await removeItem({ id: itemInWishlist.id! })
       } else {
-        await addItem({
-          productId,
-          variantId: variant?.id!,
-        })
+        // await addItem({
+        //   productId,
+        //   variantId: variant?.id!,
+        // })
       }
 
       setLoading(false)

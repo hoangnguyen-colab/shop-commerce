@@ -1,12 +1,12 @@
 import { FC } from 'react'
 import cn from 'classnames'
 import Link from 'next/link'
-import type { Product } from '@commerce/types/product'
+import type { Product } from '@lib/types/product'
 import s from './ProductCard.module.css'
 import Image, { ImageProps } from 'next/image'
 import WishlistButton from '@components/wishlist/WishlistButton'
-import usePrice from '@framework/product/use-price'
-import ProductTag from '../ProductTag'
+import ProductTag from '../ProductTag';
+import usePrice from '@lib/use-price';
 
 interface Props {
   className?: string
@@ -15,7 +15,6 @@ interface Props {
   imgProps?: Omit<ImageProps, 'src' | 'layout' | 'placeholder' | 'blurDataURL'>
   variant?: 'default' | 'slim' | 'simple'
 }
-
 const placeholderImg = '/product-img-placeholder.svg'
 
 const ProductCard: FC<Props> = ({
@@ -61,13 +60,13 @@ const ProductCard: FC<Props> = ({
 
         {variant === 'simple' && (
           <>
-            {process.env.COMMERCE_WISHLIST_ENABLED && (
-              <WishlistButton
-                className={s.wishlistButton}
-                productId={product.id}
-                variant={product.variants[0]}
-              />
-            )}
+            {/* {process.env.COMMERCE_WISHLIST_ENABLED && ( */}
+            <WishlistButton
+              className={s.wishlistButton}
+              productId={product.id}
+              variant={product.variants[0]}
+            />
+            {/* )} */}
             {!noNameTag && (
               <div className={s.header}>
                 <h3 className={s.name}>

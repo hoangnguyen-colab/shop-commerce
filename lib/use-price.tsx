@@ -1,5 +1,4 @@
-import { useMemo } from 'react'
-import { useCommerce } from '..'
+import { useMemo } from 'react';
 
 export function formatPrice({
   amount,
@@ -51,7 +50,7 @@ export default function usePrice(
   } | null
 ) {
   const { amount, baseAmount, currencyCode } = data ?? {}
-  const { locale } = useCommerce()
+  const locale = 'en-us';
   const value = useMemo(() => {
     if (typeof amount !== 'number' || !currencyCode) return ''
 

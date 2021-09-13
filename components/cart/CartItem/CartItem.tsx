@@ -5,10 +5,7 @@ import Link from 'next/link'
 import s from './CartItem.module.css'
 import { Trash, Plus, Minus, Cross } from '@components/icons'
 import { useUI } from '@components/ui/context'
-import type { LineItem } from '@commerce/types/cart'
-import usePrice from '@framework/product/use-price'
-import useUpdateItem from '@framework/cart/use-update-item'
-import useRemoveItem from '@framework/cart/use-remove-item'
+import type { LineItem } from '@lib/types/cart'
 import Quantity from '@components/ui/Quantity'
 
 type ItemOption = {
@@ -31,32 +28,24 @@ const CartItem = ({
   const { closeSidebarIfPresent } = useUI()
   const [removing, setRemoving] = useState(false)
   const [quantity, setQuantity] = useState<number>(item.quantity)
-  const removeItem = useRemoveItem()
-  const updateItem = useUpdateItem({ item })
-
-  const { price } = usePrice({
-    amount: item.variant.price * item.quantity,
-    baseAmount: item.variant.listPrice * item.quantity,
-    currencyCode,
-  })
 
   const handleChange = async ({
     target: { value },
   }: ChangeEvent<HTMLInputElement>) => {
     setQuantity(Number(value))
-    await updateItem({ quantity: Number(value) })
+    // await updateItem({ quantity: Number(value) })
   }
 
   const increaseQuantity = async (n = 1) => {
     const val = Number(quantity) + n
     setQuantity(val)
-    await updateItem({ quantity: val })
+    // await updateItem({ quantity: val })
   }
 
   const handleRemove = async () => {
     setRemoving(true)
     try {
-      await removeItem(item)
+      // await removeItem(item)
     } catch (error) {
       setRemoving(false)
     }
@@ -135,7 +124,7 @@ const CartItem = ({
           )}
         </div>
         <div className="flex flex-col justify-between space-y-2 text-sm">
-          <span>{price}</span>
+          <span>price</span>
         </div>
       </div>
       {variant === 'default' && (

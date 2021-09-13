@@ -3,7 +3,6 @@ import { validate } from 'email-validator'
 import { Info } from '@components/icons'
 import { useUI } from '@components/ui/context'
 import { Logo, Button, Input } from '@components/ui'
-import useSignup from '@framework/auth/use-signup'
 
 interface Props {}
 
@@ -18,7 +17,6 @@ const SignUpView: FC<Props> = () => {
   const [dirty, setDirty] = useState(false)
   const [disabled, setDisabled] = useState(false)
 
-  const signup = useSignup()
   const { setModalView, closeModal } = useUI()
 
   const handleSignup = async (e: React.SyntheticEvent<EventTarget>) => {
@@ -32,12 +30,12 @@ const SignUpView: FC<Props> = () => {
     try {
       setLoading(true)
       setMessage('')
-      await signup({
-        email,
-        firstName,
-        lastName,
-        password,
-      })
+      // await signup({
+      //   email,
+      //   firstName,
+      //   lastName,
+      //   password,
+      // })
       setLoading(false)
       closeModal()
     } catch ({ errors }) {

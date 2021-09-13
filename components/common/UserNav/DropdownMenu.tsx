@@ -8,7 +8,6 @@ import { Avatar } from '@components/common'
 import { Moon, Sun } from '@components/icons'
 import { useUI } from '@components/ui/context'
 import ClickOutside from '@lib/click-outside'
-import useLogout from '@framework/auth/use-logout'
 
 import {
   disableBodyScroll,
@@ -36,12 +35,15 @@ const LINKS = [
 ]
 
 const DropdownMenu: FC<DropdownMenuProps> = ({ open = false }) => {
-  const logout = useLogout()
   const { pathname } = useRouter()
   const { theme, setTheme } = useTheme()
   const [display, setDisplay] = useState(false)
   const { closeSidebarIfPresent } = useUI()
   const ref = useRef() as React.MutableRefObject<HTMLUListElement>
+
+  const handleLogout = () => {
+
+  }
 
   useEffect(() => {
     if (ref.current) {
@@ -110,7 +112,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({ open = false }) => {
             <li>
               <a
                 className={cn(s.link, 'border-t border-accent-2 mt-4')}
-                onClick={() => logout()}
+                onClick={() => handleLogout()}
               >
                 Logout
               </a>

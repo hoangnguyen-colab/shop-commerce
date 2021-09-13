@@ -6,10 +6,8 @@ import { useRouter } from 'next/router'
 
 import { Layout } from '@components/common'
 import { ProductCard } from '@components/product'
-import type { Product } from '@commerce/types/product'
+import type { Product } from '@lib/types/product'
 import { Container, Skeleton } from '@components/ui'
-
-import useSearch from '@framework/product/use-search'
 
 import getSlug from '@lib/get-slug'
 import rangeMap from '@lib/range-map'
@@ -33,7 +31,7 @@ interface ProductData {
   products: Product[]
 }
 
-export default function Search({ categories, brands }: SearchPropsType) {
+export default function Search() {
   const [activeFilter, setActiveFilter] = useState('')
   const [toggleFilter, setToggleFilter] = useState(false)
 
@@ -46,10 +44,10 @@ export default function Search({ categories, brands }: SearchPropsType) {
   const query = filterQuery({ sort })
 
   const { pathname, category, brand } = useSearchMeta(asPath)
-  const activeCategory = categories.find((cat: any) => cat.slug === category)
-  const activeBrand = brands.find(
-    (b: any) => getSlug(b.node.path) === `brands/${brand}`
-  )?.node
+  // const activeCategory = categories.find((cat: any) => cat.slug === category)
+  // const activeBrand = brands.find(
+  //   (b: any) => getSlug(b.node.path) === `brands/${brand}`
+  // )?.node
 
   // const { data } = useSearch({
   //   search: typeof q === 'string' ? q : '',
@@ -96,9 +94,9 @@ export default function Search({ categories, brands }: SearchPropsType) {
                   aria-haspopup="true"
                   aria-expanded="true"
                 >
-                  {activeCategory?.name
+                  {/* {activeCategory?.name
                     ? `Category: ${activeCategory?.name}`
-                    : 'All Categories'}
+                    : 'All Categories'} */}
                   <svg
                     className="-mr-1 ml-2 h-5 w-5"
                     xmlns="http://www.w3.org/2000/svg"
@@ -132,7 +130,7 @@ export default function Search({ categories, brands }: SearchPropsType) {
                       className={cn(
                         'block text-sm leading-5 text-accent-4 lg:text-base lg:no-underline lg:font-bold lg:tracking-wide hover:bg-accent-1 lg:hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8',
                         {
-                          underline: !activeCategory?.name,
+                          // underline: !activeCategory?.name,
                         }
                       )}
                     >
@@ -149,7 +147,7 @@ export default function Search({ categories, brands }: SearchPropsType) {
                         </a>
                       </Link>
                     </li>
-                    {categories.map((cat: any) => (
+                    {/* {categories.map((cat: any) => (
                       <li
                         key={cat.path}
                         className={cn(
@@ -175,7 +173,7 @@ export default function Search({ categories, brands }: SearchPropsType) {
                           </a>
                         </Link>
                       </li>
-                    ))}
+                    ))} */}
                   </ul>
                 </div>
               </div>
@@ -194,9 +192,9 @@ export default function Search({ categories, brands }: SearchPropsType) {
                   aria-haspopup="true"
                   aria-expanded="true"
                 >
-                  {activeBrand?.name
+                  {/* {activeBrand?.name
                     ? `Design: ${activeBrand?.name}`
-                    : 'All Designs'}
+                    : 'All Designs'} */}
                   <svg
                     className="-mr-1 ml-2 h-5 w-5"
                     xmlns="http://www.w3.org/2000/svg"
@@ -230,7 +228,7 @@ export default function Search({ categories, brands }: SearchPropsType) {
                       className={cn(
                         'block text-sm leading-5 text-accent-4 lg:text-base lg:no-underline lg:font-bold lg:tracking-wide hover:bg-accent-1 lg:hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8',
                         {
-                          underline: !activeBrand?.name,
+                          // underline: !activeBrand?.name,
                         }
                       )}
                     >
@@ -250,7 +248,7 @@ export default function Search({ categories, brands }: SearchPropsType) {
                         </a>
                       </Link>
                     </li>
-                    {brands.flatMap(({ node }: { node: any }) => (
+                    {/* {brands.flatMap(({ node }: { node: any }) => (
                       <li
                         key={node.path}
                         className={cn(
@@ -277,7 +275,7 @@ export default function Search({ categories, brands }: SearchPropsType) {
                           </a>
                         </Link>
                       </li>
-                    ))}
+                    ))} */}
                   </ul>
                 </div>
               </div>
@@ -286,7 +284,7 @@ export default function Search({ categories, brands }: SearchPropsType) {
         </div>
         {/* Products */}
         <div className="col-span-8 order-3 lg:order-none">
-          {(q || activeCategory || activeBrand) && (
+          {/* {(q || activeCategory || activeBrand) && (
             <div className="mb-12 transition ease-in duration-75">
               {data ? (
                 <>
@@ -328,7 +326,7 @@ export default function Search({ categories, brands }: SearchPropsType) {
                 <>Searching...</>
               )}
             </div>
-          )}
+          )} */}
           {productData ? (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {productData.products.map((product: Product) => (
