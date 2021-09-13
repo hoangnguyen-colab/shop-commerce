@@ -1,19 +1,13 @@
 import type { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
-import commerce from '@lib/api/commerce'
 import { Layout } from '@components/common'
 import { ProductView } from '@components/product'
 import { data } from '@lib/data/product'
 
 export async function getServerSideProps({
   params,
-  locale,
-  locales,
-  preview,
 }: GetServerSidePropsContext<{ slug: string }>) {
-
   // const { products: relatedProducts } = await allProductsPromise
-
   const product = data.products.find((item: { slug: any }) => item.slug === params!.slug);
 
   if (!product) {

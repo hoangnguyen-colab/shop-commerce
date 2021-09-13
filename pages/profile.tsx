@@ -1,27 +1,9 @@
 import type { GetStaticPropsContext } from 'next'
-import useCustomer from '@framework/customer/use-customer'
-import commerce from '@lib/api/commerce'
-import { Layout } from '@components/common'
-import { Container, Text } from '@components/ui'
-
-export async function getStaticProps({
-  preview,
-  locale,
-  locales,
-}: GetStaticPropsContext) {
-  const config = { locale, locales }
-  const pagesPromise = commerce.getAllPages({ config, preview })
-  const siteInfoPromise = commerce.getSiteInfo({ config, preview })
-  const { pages } = await pagesPromise
-  const { categories } = await siteInfoPromise
-
-  return {
-    props: { pages, categories },
-  }
-}
+import { Layout } from '@components/common';
+import { Container, Text } from '@components/ui';
 
 export default function Profile() {
-  const { data } = useCustomer()
+  const  data  = null;
   return (
     <Container>
       <Text variant="pageHeading">My Profile</Text>
@@ -31,12 +13,12 @@ export default function Profile() {
             <div>
               <Text variant="sectionHeading">Full Name</Text>
               <span>
-                {data.firstName} {data.lastName}
+                {/* {data.firstName} {data.lastName} */}
               </span>
             </div>
             <div className="mt-5">
               <Text variant="sectionHeading">Email</Text>
-              <span>{data.email}</span>
+              {/* <span>{data.email}</span> */}
             </div>
           </div>
         </div>
