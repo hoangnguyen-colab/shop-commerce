@@ -22,6 +22,8 @@
       "@assets/*": ["assets/*"],
       "@components/*": ["components/*"],
       "@contexts/*": ["contexts/*"],
+      "@network/*": ["network/*"],
+      "@hocs/*": ["hocs/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.d.ts", "**/*.ts", "**/*.tsx", "**/*.js"],

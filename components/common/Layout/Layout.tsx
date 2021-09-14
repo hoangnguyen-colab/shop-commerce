@@ -102,24 +102,22 @@ const Layout: FC<Props> = ({
   }))
 
   return (
-    // <CommerceProvider locale={locale}>
-      <div className={cn(s.root)}>
-        <Navbar links={navBarlinks} />
-        <main className="fit">{children}</main>
-        <Footer pages={pageProps.pages} />
-        <ModalUI />
-        <SidebarUI />
-        <FeatureBar
-          title="This site uses cookies to improve your experience. By clicking, you agree to our Privacy Policy."
-          hide={acceptedCookies}
-          action={
-            <Button className="mx-5" onClick={() => onAcceptCookies()}>
-              Accept cookies
-            </Button>
-          }
-        />
-      </div>
-    // </CommerceProvider>
+    <div className={cn(s.root)}>
+      <Navbar links={navBarlinks} />
+      <main className="fit">{children}</main>
+      <Footer pages={pageProps.pages} />
+      <ModalUI />
+      <SidebarUI />
+      <FeatureBar
+        title="This site uses cookies to improve your experience. By clicking, you agree to our Privacy Policy."
+        hide={acceptedCookies}
+        action={
+          <Button className="mx-5" onClick={() => onAcceptCookies()}>
+            Accept cookies
+          </Button>
+        }
+      />
+    </div>
   )
 }
 

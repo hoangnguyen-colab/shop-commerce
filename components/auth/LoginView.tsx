@@ -2,12 +2,15 @@ import { FC, useEffect, useState, useCallback } from 'react'
 import { Logo, Button, Input } from '@components/ui'
 import { useUI } from '@components/ui/context'
 import { validate } from 'email-validator'
+import { login } from '@network/API'
+import Cookie from 'js-cookie'
+import { useAuth } from '@contexts/AuthContext'
 
 interface Props {}
 
 const LoginView: FC<Props> = () => {
-  // Form State
-  const [email, setEmail] = useState('')
+  const { setAuthenticated } = useAuth()
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
@@ -15,28 +18,41 @@ const LoginView: FC<Props> = () => {
   const [disabled, setDisabled] = useState(false)
   const { setModalView, closeModal } = useUI()
 
-
   const handleLogin = async (e: React.SyntheticEvent<EventTarget>) => {
     e.preventDefault()
 
     if (!dirty && !disabled) {
-      setDirty(true);
-      handleValidation();
+      setDirty(true)
+      handleValidation()
     }
 
     try {
-      setLoading(true);
-      setMessage('');
+      setLoading(true)
+      setMessage('')
 
-      console.log({
-          email,
-          password,
-        });
+      const body = {
+        username: username,
+        password: password,
+      }
 
-      setLoading(false);
-      // closeModal();
+      const resp = await login(body)
+      const token = resp.data.accessToken
+      if (token) {
+        console.log(token);
+        
+        Cookie.set('token', token, { expires: 7 })
+        setAuthenticated(true)
+        closeModal();
+      } else {
+        setMessage('Error orcured')
+      }
+
+      setLoading(false)
+      setDisabled(false)
     } catch ({ errors }) {
-      setMessage(errors[0]?.message)
+      console.log(errors)
+      setMessage('Error orcured')
+      // setMessage(errors[0]?.message);
       setLoading(false)
       setDisabled(false)
     }
@@ -46,9 +62,11 @@ const LoginView: FC<Props> = () => {
     const validPassword = /^(?=.*[a-zA-Z])(?=.*[0-9])/.test(password)
 
     if (dirty) {
-      setDisabled(!email || !password || password.length < 7 || !validPassword)
+      setDisabled(
+        !username || !password || password.length < 7 || !validPassword
+      )
     }
-  }, [email, password, dirty])
+  }, [username, password, dirty])
 
   useEffect(() => {
     handleValidation()
@@ -74,8 +92,18 @@ const LoginView: FC<Props> = () => {
             </a>
           </div>
         )}
-        <Input type="email" placeholder="Email" onChange={setEmail} required/>
-        <Input type="password" placeholder="Password" onChange={setPassword} required/>
+        <Input
+          type="text"
+          placeholder="Username"
+          onChange={setUsername}
+          required
+        />
+        <Input
+          type="password"
+          placeholder="Password"
+          onChange={setPassword}
+          required
+        />
 
         <Button
           variant="slim"

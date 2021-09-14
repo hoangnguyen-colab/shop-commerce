@@ -1,9 +1,10 @@
 import type { GetStaticPropsContext } from 'next'
 import { Bag } from '@components/icons'
 import { Layout } from '@components/common'
-import { Container, Text } from '@components/ui'
+import { Container, Text } from '@components/ui';
+import withAuth from '@hocs/withAuth';
 
-export default function Orders() {
+function Orders() {
   return (
     <Container>
       <Text variant="pageHeading">My Orders</Text>
@@ -23,3 +24,5 @@ export default function Orders() {
 }
 
 Orders.Layout = Layout
+
+export default withAuth(Orders);

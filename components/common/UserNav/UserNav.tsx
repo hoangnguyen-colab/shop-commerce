@@ -8,6 +8,7 @@ import { useUI } from '@components/ui/context'
 import Button from '@components/ui/Button'
 import DropdownMenu from './DropdownMenu'
 import s from './UserNav.module.css'
+import { useIsAuthenticated } from '@contexts/AuthContext'
 
 interface Props {
   className?: string
@@ -17,8 +18,9 @@ const countItem = (count: number, item: LineItem) => count + item.quantity
 
 const UserNav: FC<Props> = ({ className }) => {
   const { toggleSidebar, closeSidebarIfPresent, openModal } = useUI()
-  const [customer, setCustomer] = useState(false);
+  const [customer, setCustomer] = useState(false)
   // const itemsCount = data?.lineItems.reduce(countItem, 0) ?? 0
+  const auth = useIsAuthenticated()
 
   return (
     <nav className={cn(s.root, className)}>
@@ -34,6 +36,7 @@ const UserNav: FC<Props> = ({ className }) => {
             {/* {itemsCount > 0 && <span className={s.bagCount}>{itemsCount}</span>} */}
           </Button>
         </li>
+        {auth && (
           <li className={s.item}>
             <Link href="/wishlist">
               <a onClick={closeSidebarIfPresent} aria-label="Wishlist">
@@ -41,8 +44,9 @@ const UserNav: FC<Props> = ({ className }) => {
               </a>
             </Link>
           </li>
+        )}
         <li className={s.item}>
-          {customer ? (
+          {auth ? (
             <DropdownMenu />
           ) : (
             <button
