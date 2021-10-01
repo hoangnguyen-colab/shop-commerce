@@ -1,6 +1,6 @@
 import type { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
-import { Layout } from '@components/common'
+// import { Layout } from '@components/common'
 import { ProductView } from '@components/product'
 import { data } from '@lib/data/product'
 
@@ -40,4 +40,4 @@ export default function Slug({
   )
 }
 
-Slug.Layout = Layout
+// Slug.Layout = Layout

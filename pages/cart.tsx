@@ -1,5 +1,5 @@
 import type { GetStaticPropsContext } from 'next'
-import { Layout } from '@components/common'
+// import { Layout } from '@components/common'
 import { Button, Text } from '@components/ui'
 import { Bag, Cross, Check, MapPin, CreditCard } from '@components/icons'
 import { CartItem } from '@components/cart'
@@ -158,4 +158,4 @@ export default function Cart() {
   )
 }
 
-Cart.Layout = Layout
+// Cart.Layout = Layout

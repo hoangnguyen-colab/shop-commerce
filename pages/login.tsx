@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout } from '@components/common';
+// import { Layout } from '@components/common';
 
 export default function login() {
     return (
@@ -9,4 +9,4 @@ export default function login() {
     )
 }
 
-login.Layout = Layout;
+// login.Layout = Layout;

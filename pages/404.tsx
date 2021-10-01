@@ -1,5 +1,5 @@
 import type { GetStaticPropsContext } from 'next'
-import { Layout } from '@components/common'
+// import { Layout } from '@components/common'
 import { Text } from '@components/ui'
 
 export async function getStaticProps({
@@ -21,4 +21,4 @@ export default function NotFound() {
   )
 }
 
-NotFound.Layout = Layout
+// NotFound.Layout = Layout

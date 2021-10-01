@@ -1,5 +1,5 @@
 import type { GetStaticPropsContext } from 'next'
-import { Layout } from '@components/common';
+// import { Layout } from '@components/common';
 import { Container, Text } from '@components/ui';
 import withAuth from '@hocs/withAuth';
 
@@ -28,6 +28,6 @@ function Profile() {
   )
 }
 
-Profile.Layout = Layout
+// Profile.Layout = Layout
 
 export default withAuth(Profile);

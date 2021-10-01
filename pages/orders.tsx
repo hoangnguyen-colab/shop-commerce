@@ -1,6 +1,6 @@
 import type { GetStaticPropsContext } from 'next'
 import { Bag } from '@components/icons'
-import { Layout } from '@components/common'
+// import { Layout } from '@components/common'
 import { Container, Text } from '@components/ui';
 import withAuth from '@hocs/withAuth';
 
@@ -23,6 +23,6 @@ function Orders() {
   )
 }
 
-Orders.Layout = Layout
+// Orders.Layout = Layout
 
 export default withAuth(Orders);

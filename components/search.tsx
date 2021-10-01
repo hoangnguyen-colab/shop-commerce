@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
-import { Layout } from '@components/common'
+// import { Layout } from '@components/common'
 import { ProductCard } from '@components/product'
 import type { Product } from '@lib/types/product'
 import { Container, Skeleton } from '@components/ui'
@@ -451,4 +451,4 @@ export default function Search() {
   )
 }
 
-Search.Layout = Layout
+// Search.Layout = Layout

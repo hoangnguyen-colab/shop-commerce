@@ -1,6 +1,6 @@
 import type { GetStaticPropsContext } from 'next'
 import { Heart } from '@components/icons'
-import { Layout } from '@components/common'
+// import { Layout } from '@components/common'
 import { Text, Container } from '@components/ui'
 import { WishlistCard } from '@components/wishlist'
 
@@ -41,4 +41,4 @@ export default function Wishlist() {
   )
 }
 
-Wishlist.Layout = Layout
+// Wishlist.Layout = Layout
