@@ -7,11 +7,13 @@ import { Button, Text } from '@components/ui'
 import { useUI } from '@components/ui/context'
 import { Bag, Cross, Check } from '@components/icons'
 import SidebarLayout from '@components/common/SidebarLayout'
+import { useCartItems } from '@contexts/CartContext'
 
 const CartSidebarView: FC = () => {
-  const { closeSidebar, setSidebarView } = useUI();
-  const handleClose = () => closeSidebar();
-  const goToCheckout = () => setSidebarView('CHECKOUT_VIEW');
+  const { closeSidebar, setSidebarView } = useUI()
+  const cartItems = useCartItems()
+  const handleClose = () => closeSidebar()
+  const goToCheckout = () => setSidebarView('CHECKOUT_VIEW')
 
   const error = null
   const success = null
@@ -23,7 +25,7 @@ const CartSidebarView: FC = () => {
       })}
       handleClose={handleClose}
     >
-      {true ? (
+      {!cartItems || cartItems.length === 0 ? (
         <div className="flex-1 px-4 flex flex-col justify-center items-center">
           <span className="border border-dashed border-primary rounded-full flex items-center justify-center w-16 h-16 p-12 bg-secondary text-secondary">
             <Bag className="absolute" />
@@ -62,15 +64,16 @@ const CartSidebarView: FC = () => {
                 My Cart
               </Text>
             </Link>
-            {/* <ul className={s.lineItemsList}>
-              {data!.lineItems.map((item: any) => (
+            <ul className={s.lineItemsList}>
+              {cartItems!.map((item: any) => (
                 <CartItem
-                  key={item.id}
+                  key={item.productId}
                   item={item}
-                  currencyCode={data!.currency.code}
+                  // currencyCode={data!.currency.code}
+                  currencyCode={'$'}
                 />
               ))}
-            </ul> */}
+            </ul>
           </div>
 
           <div className="flex-shrink-0 px-6 py-6 sm:px-6 sticky z-20 bottom-0 w-full right-0 left-0 bg-accent-0 border-t text-sm">

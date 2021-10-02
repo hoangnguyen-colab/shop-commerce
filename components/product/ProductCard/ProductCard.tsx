@@ -5,8 +5,8 @@ import type { Product } from '@lib/types/product'
 import s from './ProductCard.module.css'
 import Image, { ImageProps } from 'next/image'
 import WishlistButton from '@components/wishlist/WishlistButton'
-import ProductTag from '../ProductTag';
-import usePrice from '@lib/use-price';
+import ProductTag from '../ProductTag'
+import usePrice from '@lib/use-price'
 
 interface Props {
   className?: string
@@ -60,13 +60,13 @@ const ProductCard: FC<Props> = ({
 
         {variant === 'simple' && (
           <>
-            {/* {process.env.COMMERCE_WISHLIST_ENABLED && ( */}
-            <WishlistButton
-              className={s.wishlistButton}
-              productId={product.id}
-              variant={product.variants[0]}
-            />
-            {/* )} */}
+            {process.env.COMMERCE_WISHLIST_ENABLED && (
+              <WishlistButton
+                className={s.wishlistButton}
+                productId={product.id}
+                variant={product.variants[0]}
+              />
+            )}
             {!noNameTag && (
               <div className={s.header}>
                 <h3 className={s.name}>

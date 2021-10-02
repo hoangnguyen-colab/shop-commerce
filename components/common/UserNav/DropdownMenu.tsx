@@ -8,6 +8,8 @@ import { Avatar } from '@components/common'
 import { Moon, Sun } from '@components/icons'
 import { useUI } from '@components/ui/context'
 import ClickOutside from '@lib/click-outside'
+import Cookie from 'js-cookie'
+import { useAuth } from '@contexts/AuthContext'
 
 import {
   disableBodyScroll,
@@ -35,14 +37,21 @@ const LINKS = [
 ]
 
 const DropdownMenu: FC<DropdownMenuProps> = ({ open = false }) => {
+  const { setAuthenticated } = useAuth()
   const { pathname } = useRouter()
   const { theme, setTheme } = useTheme()
   const [display, setDisplay] = useState(false)
   const { closeSidebarIfPresent } = useUI()
   const ref = useRef() as React.MutableRefObject<HTMLUListElement>
 
-  const handleLogout = () => {
-
+  const handleLogout = async () => {
+    const response = await fetch('/api/logout')
+    if (response.status === 200) {
+      Cookie.remove('token')
+      setAuthenticated(false)
+    } else {
+      console.error('Failed to logout', response)
+    }
   }
 
   useEffect(() => {

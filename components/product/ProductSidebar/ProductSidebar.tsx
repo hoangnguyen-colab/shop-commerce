@@ -8,6 +8,7 @@ import {
   selectDefaultOptionFromProduct,
   SelectedOptions,
 } from '../helpers'
+import { useCart } from '@contexts/CartContext'
 
 interface ProductSidebarProps {
   product: Product
@@ -15,6 +16,7 @@ interface ProductSidebarProps {
 }
 
 const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
+  const { addProduct } = useCart()
   const { openSidebar } = useUI()
   const [loading, setLoading] = useState(false)
   const [selectedOptions, setSelectedOptions] = useState<SelectedOptions>({})
@@ -24,13 +26,18 @@ const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
   }, [product])
 
   const variant = getProductVariant(product, selectedOptions)
+
   const addToCart = async () => {
     setLoading(true)
     try {
-      // await addItem({
-      //   productId: String(product.id),
-      //   variantId: String(variant ? variant.id : product.variants[0].id),
-      // })
+      addProduct({
+        productId: String(product.id),
+        name: product.name,
+        image: product.images[0].url,
+        quantity: 1,
+        path: product.slug ? product.slug : '',
+        price: product.price.value,
+      })
       openSidebar()
       setLoading(false)
     } catch (err) {
@@ -40,11 +47,13 @@ const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
 
   return (
     <div className={className}>
-      <ProductOptions
-        options={product.options}
-        selectedOptions={selectedOptions}
-        setSelectedOptions={setSelectedOptions}
-      />
+      {process.env.COMMERCE_PRODUCT_OPTIONS_ENABLED && (
+        <ProductOptions
+          options={product.options}
+          selectedOptions={selectedOptions}
+          setSelectedOptions={setSelectedOptions}
+        />
+      )}
       <Text
         className="pb-4 break-words w-full max-w-xl"
         html={product.descriptionHtml || product.description}
@@ -54,7 +63,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
         <div className="text-accent-6 pr-1 font-medium text-sm">36 reviews</div>
       </div>
       <div>
-        {/* {process.env.COMMERCE_CART_ENABLED && ( */}
+        {process.env.COMMERCE_CART_ENABLED && (
           <Button
             aria-label="Add to Cart"
             type="button"
@@ -67,7 +76,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
               ? 'Not Available'
               : 'Add To Cart'}
           </Button>
-        {/* )} */}
+        )}
       </div>
       <div className="mt-6">
         <Collapse title="Care">

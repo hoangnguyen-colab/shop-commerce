@@ -36,15 +36,13 @@ const LoginView: FC<Props> = () => {
       }
 
       const resp = await login(body)
-      const token = resp.data.accessToken
+      const token = resp.data.accessToken;
       if (token) {
-        console.log(token);
-        
         Cookie.set('token', token, { expires: 7 })
         setAuthenticated(true)
         closeModal();
       } else {
-        setMessage('Error orcured')
+        setMessage('Check your informations and try again')
       }
 
       setLoading(false)

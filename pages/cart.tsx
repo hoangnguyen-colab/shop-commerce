@@ -3,13 +3,15 @@ import type { GetStaticPropsContext } from 'next'
 import { Button, Text } from '@components/ui'
 import { Bag, Cross, Check, MapPin, CreditCard } from '@components/icons'
 import { CartItem } from '@components/cart'
+import { useCartItems } from '@contexts/CartContext'
 
 export default function Cart() {
+  const cartItems = useCartItems()
   const error = null
   const success = null
-  const data = null
-  const isLoading = true
-  const isEmpty = true
+  const isLoading = false
+  const isEmpty = (!cartItems || cartItems.length === 0)
+  
 
   // const { price: subTotal } = usePrice(
   //   data && {
@@ -63,13 +65,13 @@ export default function Cart() {
             <Text variant="pageHeading">My Cart</Text>
             <Text variant="sectionHeading">Review your Order</Text>
             <ul className="py-6 space-y-6 sm:py-0 sm:space-y-0 sm:divide-y sm:divide-accent-2 border-b border-accent-2">
-              {/* {data!.lineItems.map((item: any) => (
+              {cartItems.map((item: any) => (
                 <CartItem
                   key={item.id}
                   item={item}
-                  currencyCode={data?.currency.code!}
+                  currencyCode={'$'}
                 />
-              ))} */}
+              ))}
             </ul>
             <div className="my-6">
               <Text>

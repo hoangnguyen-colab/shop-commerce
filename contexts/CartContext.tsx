@@ -1,24 +1,36 @@
 import { ReactNode, createContext, useState, useContext } from 'react'
-import type { LineItem } from '@lib/types/cart'
+import type { CartItemBody } from '@lib/types/cart'
 
 interface ContextProviderProps {
   children: ReactNode
 }
 
 interface ContextProps {
-  cartItems: LineItem[]
-  addProduct: (val: LineItem) => void
+  cartItems: CartItemBody[]
+  addProduct: (item: CartItemBody) => void
   removeProduct: (id: number) => void
 }
 
 export const CartContext = createContext<ContextProps | undefined>(undefined)
 
 export const CartProvider = ({ children }: ContextProviderProps) => {
-  const [cartItems, setCartItems] = useState<LineItem[]>([])
+  const [cartItems, setCartItems] = useState<CartItemBody[]>([])
 
-  const addProduct = (val: LineItem) => {}
+  const addProduct = (item: CartItemBody) => {
+    const cart = [...cartItems]
 
-  const removeProduct = (id: number) => {}
+    var index = cart.findIndex((cartItem) => cartItem.productId === item.productId)
+    if (index >= 0) {
+      cart[index].quantity += item.quantity;
+      setCartItems(cart);
+      return;
+    }
+    setCartItems((cart) => [...cart, item])
+  }
+
+  const removeProduct = (id: number) => {
+    console.log(id)
+  }
 
   return (
     <CartContext.Provider value={{ cartItems, addProduct, removeProduct }}>
@@ -27,7 +39,7 @@ export const CartProvider = ({ children }: ContextProviderProps) => {
   )
 }
 
-export function useAuth() {
+export function useCart() {
   const context = useContext(CartContext)
   if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider')
@@ -35,7 +47,7 @@ export function useAuth() {
   return context
 }
 
-// export function useIsAuthenticated() {
-//   const context = useAuth()
-//   return context?.isAuthenticated
-// }
+export function useCartItems() {
+  const context = useCart()
+  return context?.cartItems
+}

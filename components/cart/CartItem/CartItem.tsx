@@ -5,7 +5,7 @@ import Link from 'next/link'
 import s from './CartItem.module.css'
 import { Trash, Plus, Minus, Cross } from '@components/icons'
 import { useUI } from '@components/ui/context'
-import type { LineItem } from '@lib/types/cart'
+import type { CartItemBody } from '@lib/types/cart'
 import Quantity from '@components/ui/Quantity'
 
 type ItemOption = {
@@ -22,7 +22,7 @@ const CartItem = ({
   ...rest
 }: {
   variant?: 'default' | 'display'
-  item: LineItem
+  item: CartItemBody
   currencyCode: string
 }) => {
   const { closeSidebarIfPresent } = useUI()
@@ -79,8 +79,8 @@ const CartItem = ({
               className={s.productImage}
               width={150}
               height={150}
-              src={item.variant.image!.url}
-              alt={item.variant.image!.altText}
+              src={item.image}
+              alt={item.name}
               unoptimized
             />
           </Link>
@@ -98,7 +98,7 @@ const CartItem = ({
             <div className="flex items-center pb-1">
               {options.map((option: ItemOption, i: number) => (
                 <div
-                  key={`${item.id}-${option.name}`}
+                  key={`${item.productId}-${option.name}`}
                   className="text-sm font-semibold text-accent-7 inline-flex items-center justify-center"
                 >
                   {option.name}
@@ -124,7 +124,10 @@ const CartItem = ({
           )}
         </div>
         <div className="flex flex-col justify-between space-y-2 text-sm">
-          <span>price</span>
+          <span>
+            {currencyCode}
+            {item.price}
+          </span>
         </div>
       </div>
       {variant === 'default' && (

@@ -62,7 +62,7 @@ export default function Search() {
   useEffect(() => {
     let timer1 = setTimeout(() => {
       setProductData(data);
-    }, 3000)
+    }, 1000)
 
     return () => {
       clearTimeout(timer1)

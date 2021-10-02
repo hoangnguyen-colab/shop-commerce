@@ -96,10 +96,20 @@ const Layout: FC<Props> = ({
 }) => {
   const { acceptedCookies, onAcceptCookies } = useAcceptCookies()
   const { locale = 'en-US' } = useRouter()
-  const navBarlinks = categories.slice(0, 2).map((c) => ({
-    label: c.name,
-    href: `/search/${c.slug}`,
-  }))
+  const navBarlinks = [
+    {
+      label: 'Shop',
+      href: `/shop`,
+    },
+    {
+      label: 'About',
+      href: `/about`,
+    },
+    {
+      label: 'Contact',
+      href: `/contact`,
+    },
+  ]
 
   return (
     <div className={cn(s.root)}>

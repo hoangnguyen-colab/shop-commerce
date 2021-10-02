@@ -22,6 +22,15 @@ export type LineItem = {
   options?: SelectedOption[]
 }
 
+export type CartItemBody = {
+  productId: string
+  name: string
+  image: string
+  quantity: number
+  path: string
+  price: number
+}
+
 export type ProductVariant = {
   id: string
   // The SKU (stock keeping unit) associated with the product variant.
@@ -80,15 +89,6 @@ export type Cart = {
   totalPrice: number
   // Discounts that have been applied on the cart.
   discounts?: Discount[]
-}
-
-/**
- * Base cart item body used for cart mutations
- */
-export type CartItemBody = {
-  variantId: string
-  productId?: string
-  quantity?: number
 }
 
 /**
