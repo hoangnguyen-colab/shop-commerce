@@ -7,6 +7,7 @@ import { Trash, Plus, Minus, Cross } from '@components/icons'
 import { useUI } from '@components/ui/context'
 import type { CartItemBody } from '@lib/types/cart'
 import Quantity from '@components/ui/Quantity'
+import { useCart } from '@contexts/CartContext'
 
 type ItemOption = {
   name: string
@@ -25,6 +26,7 @@ const CartItem = ({
   item: CartItemBody
   currencyCode: string
 }) => {
+  const { removeProduct, changeQuantity } = useCart()
   const { closeSidebarIfPresent } = useUI()
   const [removing, setRemoving] = useState(false)
   const [quantity, setQuantity] = useState<number>(item.quantity)
@@ -33,34 +35,29 @@ const CartItem = ({
     target: { value },
   }: ChangeEvent<HTMLInputElement>) => {
     setQuantity(Number(value))
-    // await updateItem({ quantity: Number(value) })
   }
 
   const increaseQuantity = async (n = 1) => {
     const val = Number(quantity) + n
-    setQuantity(val)
-    // await updateItem({ quantity: val })
+    changeQuantity(item.productId, val);
   }
 
   const handleRemove = async () => {
-    setRemoving(true)
-    try {
-      // await removeItem(item)
-    } catch (error) {
-      setRemoving(false)
-    }
+    removeProduct(item.productId);
+    // setRemoving(true)
+    // try {
+    // } catch (error) {
+    //   setRemoving(false)
+    // }
   }
 
   // TODO: Add a type for this
   const options = (item as any).options
 
   useEffect(() => {
-    // Reset the quantity state if the item quantity changes
     if (item.quantity !== Number(quantity)) {
       setQuantity(item.quantity)
     }
-    // TODO: currently not including quantity in deps is intended, but we should
-    // do this differently as it could break easily
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item.quantity])
 

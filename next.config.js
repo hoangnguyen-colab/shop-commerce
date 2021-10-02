@@ -4,11 +4,13 @@ module.exports = {
     domains: ['cdn11.bigcommerce.com'],
   },
   env: {
+    API_BASE_URL: "https://ollivander-backn.herokuapp.com/",
     COMMERCE_CART_ENABLED: true,
     COMMERCE_PRODUCT_OPTIONS_ENABLED: false,
     COMMERCE_WISHLIST_ENABLED: false,
     COMMERCE_CUSTOMCHECKOUT_ENABLED: false,
     COMMERCE_SEARCH_ENABLED: true,
+    COMMERCE_CURRENCY_CODE: "$"
   }
 }
 

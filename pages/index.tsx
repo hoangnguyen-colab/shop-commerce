@@ -5,7 +5,7 @@ import { Grid, Marquee, Hero } from '@components/ui'
 // import HomeAllProductsGrid from '@components/common/HomeAllProductsGrid'
 import type { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
 import { getServerSideProps } from './product/[slug]'
-import data from '@lib/data/preview-product.json';
+import { data } from '@lib/data/product'
 
 export async function getStaticProps({
   preview,

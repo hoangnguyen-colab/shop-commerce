@@ -8,7 +8,8 @@ interface ContextProviderProps {
 interface ContextProps {
   cartItems: CartItemBody[]
   addProduct: (item: CartItemBody) => void
-  removeProduct: (id: number) => void
+  removeProduct: (id: string) => void
+  changeQuantity: (id: string, quantity: number) => void
 }
 
 export const CartContext = createContext<ContextProps | undefined>(undefined)
@@ -18,22 +19,39 @@ export const CartProvider = ({ children }: ContextProviderProps) => {
 
   const addProduct = (item: CartItemBody) => {
     const cart = [...cartItems]
-
-    var index = cart.findIndex((cartItem) => cartItem.productId === item.productId)
+    var index = findCartItem(item.productId)
     if (index >= 0) {
-      cart[index].quantity += item.quantity;
-      setCartItems(cart);
-      return;
+      cart[index].quantity += item.quantity
+      setCartItems(cart)
+      return
     }
     setCartItems((cart) => [...cart, item])
   }
 
-  const removeProduct = (id: number) => {
-    console.log(id)
+  const removeProduct = (id: string) => {
+    setCartItems(cartItems.filter((item) => item.productId !== id))
+  }
+
+  const changeQuantity = (id: string, quantity: number) => {
+    const cart = [...cartItems]
+    var index = findCartItem(id)
+    if (index >= 0) {
+      cart[index].quantity = quantity
+      setCartItems(cart)
+    }
+  }
+
+  const findCartItem = (id: string): number => {
+    const cart = [...cartItems]
+    const index = cart.findIndex((cartItem) => cartItem.productId === id)
+
+    return index
   }
 
   return (
-    <CartContext.Provider value={{ cartItems, addProduct, removeProduct }}>
+    <CartContext.Provider
+      value={{ cartItems, addProduct, removeProduct, changeQuantity }}
+    >
       {children}
     </CartContext.Provider>
   )

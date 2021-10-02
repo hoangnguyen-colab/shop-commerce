@@ -70,7 +70,11 @@ const CartSidebarView: FC = () => {
                   key={item.productId}
                   item={item}
                   // currencyCode={data!.currency.code}
-                  currencyCode={'$'}
+                  currencyCode={
+                    process.env.COMMERCE_CURRENCY_CODE
+                      ? process.env.COMMERCE_CURRENCY_CODE
+                      : '$'
+                  }
                 />
               ))}
             </ul>
