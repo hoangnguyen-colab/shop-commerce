@@ -36,7 +36,7 @@ const LoginView: FC<Props> = () => {
       }
 
       const resp = await login(body)
-      const token = resp.data.accessToken;
+      const token = resp.data?.responseData?.accessToken;
       if (token) {
         Cookie.set('token', token, { expires: 7 })
         setAuthenticated(true)
