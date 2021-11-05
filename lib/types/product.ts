@@ -32,17 +32,18 @@ export type ProductVariant = {
 }
 
 export type Product = {
-  id: string
-  name: string
-  description: string
-  descriptionHtml?: string
-  sku?: string
-  slug?: string
-  path?: string
+  ProductId: string
+  ProductCode: string
+  Title: string
+  Content: string
+  ContentHtml?: string
+  Quantity: number
+  Price: number
+  Sku?: string
+  Slug?: string
+  Path?: string
+  Image: string,
   images: ProductImage[]
-  variants: ProductVariant[]
-  price: ProductPrice
-  options: ProductOption[]
 }
 
 export type SearchProductsBody = {

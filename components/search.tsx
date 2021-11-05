@@ -8,10 +8,10 @@ import { useRouter } from 'next/router'
 import { ProductCard } from '@components/product'
 import type { Product } from '@lib/types/product'
 import { Container, Skeleton } from '@components/ui'
+import { productList } from '@network/API'
 
 import getSlug from '@lib/get-slug'
 import rangeMap from '@lib/range-map'
-import { data } from '@lib/data/product'
 
 const SORT = {
   'trending-desc': 'Trending',
@@ -57,17 +57,23 @@ export default function Search() {
   //   locale,
   // });
 
-  const [productData, setProductData] = useState<ProductData | null>(null)
+  const [productData, setProductData] = useState<Product[] | null>(null)
 
   useEffect(() => {
-    let timer1 = setTimeout(() => {
-      setProductData(data);
-    }, 1000)
-
-    return () => {
-      clearTimeout(timer1)
-    }
+    getProductList();
   }, [])
+
+  const getProductList = () => {
+    productList(0, 21)
+      .then((resp) => {
+        if(resp.data?.Data) {
+          setProductData(resp.data?.Data);
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
 
   const handleClick = (event: any, filter: string) => {
     if (filter !== activeFilter) {
@@ -327,12 +333,12 @@ export default function Search() {
               )}
             </div>
           )} */}
-          {productData ? (
+          {(productData) ? (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {productData.products.map((product: Product) => (
+              {productData.map((product: Product, index) => (
                 <ProductCard
                   variant="simple"
-                  key={product.path}
+                  key={index.toString() + product?.ProductCode}
                   className="animated fadeIn"
                   product={product}
                   imgProps={{

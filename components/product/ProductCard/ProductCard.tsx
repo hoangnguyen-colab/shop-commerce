@@ -8,6 +8,7 @@ import WishlistButton from '@components/wishlist/WishlistButton'
 import ProductTag from '../ProductTag'
 import usePrice from '@lib/use-price'
 
+const baseCurrencyCode = "VND"
 interface Props {
   className?: string
   product: Product
@@ -24,11 +25,11 @@ const ProductCard: FC<Props> = ({
   noNameTag = false,
   variant = 'default',
 }) => {
-  const { price } = usePrice({
-    amount: product.price.value,
-    baseAmount: product.price.retailPrice,
-    currencyCode: product.price.currencyCode!,
-  })
+  // const { price } = usePrice({
+  //   amount: product.Price,
+  //   baseAmount: product.price.retailPrice,
+  //   currencyCode: product.price.currencyCode!,
+  // })
 
   const rootClassName = cn(
     s.root,
@@ -37,18 +38,28 @@ const ProductCard: FC<Props> = ({
   )
 
   return (
-    <Link href={`/product/${product.slug}`}>
+    <Link href={`/product/${product.ProductId}`}>
       <a className={rootClassName}>
         {variant === 'slim' && (
           <>
             <div className={s.header}>
-              <span>{product.name}</span>
+              <span>{product.Title}</span>
             </div>
-            {product?.images && (
+            {product?.images ? (
               <Image
                 quality="85"
                 src={product.images[0]?.url || placeholderImg}
-                alt={product.name || 'Product Image'}
+                alt={product.Title || 'Product Image'}
+                height={320}
+                width={320}
+                layout="fixed"
+                {...imgProps}
+              />
+            ) : (
+              <Image
+                quality="85"
+                src={"https://cdn11.bigcommerce.com/s-qfzerv205w/images/stencil/original/products/116/512/Men-Jacket-Front-Black__15466.1603283963.png"}
+                alt={product.Title || 'Product Image'}
                 height={320}
                 width={320}
                 layout="fixed"
@@ -60,27 +71,20 @@ const ProductCard: FC<Props> = ({
 
         {variant === 'simple' && (
           <>
-            {process.env.COMMERCE_WISHLIST_ENABLED && (
-              <WishlistButton
-                className={s.wishlistButton}
-                productId={product.id}
-                variant={product.variants[0]}
-              />
-            )}
             {!noNameTag && (
               <div className={s.header}>
                 <h3 className={s.name}>
-                  <span>{product.name}</span>
+                  <span>{product.Title}</span>
                 </h3>
                 <div className={s.price}>
-                  {`${price} ${product.price?.currencyCode}`}
+                  {`${product.Price} ${baseCurrencyCode}`}
                 </div>
               </div>
             )}
             <div className={s.imageContainer}>
-              {product?.images && (
+              {product?.images ? (
                 <Image
-                  alt={product.name || 'Product Image'}
+                  alt={product.Title || 'Product Image'}
                   className={s.productImage}
                   src={product.images[0]?.url || placeholderImg}
                   height={540}
@@ -89,6 +93,17 @@ const ProductCard: FC<Props> = ({
                   layout="responsive"
                   {...imgProps}
                 />
+                ) : (
+                  <Image
+                    alt={product.Title || 'Product Image'}
+                    className={s.productImage}
+                    src={"https://cdn11.bigcommerce.com/s-qfzerv205w/images/stencil/original/products/116/512/Men-Jacket-Front-Black__15466.1603283963.png"}
+                    height={540}
+                    width={540}
+                    quality="85"
+                    layout="responsive"
+                    {...imgProps}
+                  />
               )}
             </div>
           </>
@@ -96,23 +111,27 @@ const ProductCard: FC<Props> = ({
 
         {variant === 'default' && (
           <>
-            {process.env.COMMERCE_WISHLIST_ENABLED && (
-              <WishlistButton
-                className={s.wishlistButton}
-                productId={product.id}
-                variant={product.variants[0] as any}
-              />
-            )}
             <ProductTag
-              name={product.name}
-              price={`${price} ${product.price?.currencyCode}`}
+              name={product.Title}
+              price={`${product.Price} ${baseCurrencyCode}`}
             />
             <div className={s.imageContainer}>
-              {product?.images && (
+              {product?.images ? (
                 <Image
-                  alt={product.name || 'Product Image'}
+                  alt={product.Title || 'Product Image'}
                   className={s.productImage}
                   src={product.images[0]?.url || placeholderImg}
+                  height={540}
+                  width={540}
+                  quality="85"
+                  layout="responsive"
+                  {...imgProps}
+                />
+              ) : (
+                <Image
+                  alt={product.Title || 'Product Image'}
+                  className={s.productImage}
+                  src={"https://cdn11.bigcommerce.com/s-qfzerv205w/images/stencil/original/products/116/512/Men-Jacket-Front-Black__15466.1603283963.png"}
                   height={540}
                   width={540}
                   quality="85"

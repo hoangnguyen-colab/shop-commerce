@@ -1,7 +1,11 @@
-import { apiClient } from "@network/ApiInstance";
-import Endpoints from "@network/Endpoint";
+import { apiClient } from '@network/ApiInstance'
+import Endpoints from '@network/Endpoint'
 
-const { get, post, put } = apiClient;
+const { get, post, put } = apiClient
 
-export const login = (loginInfo: {}) => post(Endpoints.LOGIN, loginInfo);
-export const signup = (signupInfo: {}) => post(Endpoints.SIGNUP, signupInfo);
+export const login = (loginInfo: {}) => post(Endpoints.LOGIN, loginInfo)
+export const signup = (signupInfo: {}) => post(Endpoints.SIGNUP, signupInfo)
+export const productList = (page: number, record: number) =>
+  get(`${Endpoints.PRODUCT}?page=${page}&record=${record}`)
+export const productDetail = (productId: string) =>
+  get(`${Endpoints.PRODUCT_DETAIL}?id=${productId}`)

@@ -1,15 +1,26 @@
-import type { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
+import type {
+  GetServerSidePropsContext,
+  InferGetServerSidePropsType,
+} from 'next'
 import { useRouter } from 'next/router'
-// import { Layout } from '@components/common'
 import { ProductView } from '@components/product'
 import { data } from '@lib/data/product'
+import { productDetail } from '@network/API'
 
 export async function getServerSideProps({
   params,
 }: GetServerSidePropsContext<{ slug: string }>) {
   // const { products: relatedProducts } = await allProductsPromise
-  const product = data.products.find((item: { slug: any }) => item.slug === params!.slug);
+  // const product = data.products.find((item: { slug: any }) => item.slug === params!.slug);
 
+  let product = null
+
+  const resp = await productDetail(params!.slug);
+  const data = resp.data!.Data?.product
+  if (data) {
+    product = data;
+  }
+  
   if (!product) {
     return {
       redirect: {
@@ -22,14 +33,13 @@ export async function getServerSideProps({
   return {
     props: {
       product,
-      // relatedProducts,
     },
   }
 }
 export default function Slug({
   product,
-  // relatedProducts,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: // relatedProducts,
+InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter()
 
   return router.isFallback ? (
