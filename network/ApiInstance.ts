@@ -2,10 +2,6 @@ import axios from "axios";
 import * as RequestInterceptor from "@network/interceptors/request";
 import * as ResponseInterceptor from "@network/interceptors/response";
 
-
-//https://salemodel.somee.com/
-const API_BASE_URL = process.env.API_BASE_URL + 'api/';
-
 const getInstance = (baseUrl: string) => {
   const instance = axios.create({
     baseURL: baseUrl,
@@ -22,4 +18,4 @@ const getInstance = (baseUrl: string) => {
   return instance;
 };
 
-export const apiClient = getInstance(API_BASE_URL);
+export const apiClient = getInstance(process.env.API_BASE_URL!);

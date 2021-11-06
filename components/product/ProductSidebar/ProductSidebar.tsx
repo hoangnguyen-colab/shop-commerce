@@ -22,21 +22,30 @@ const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
   const [selectedOptions, setSelectedOptions] = useState<SelectedOptions>({})
 
   useEffect(() => {
-    selectDefaultOptionFromProduct(product, setSelectedOptions)
+    // selectDefaultOptionFromProduct(product, setSelectedOptions)
   }, [product])
 
-  const variant = getProductVariant(product, selectedOptions)
+  // const variant = getProductVariant(product, selectedOptions)
 
   const addToCart = async () => {
+    console.log({
+      productId: product.ProductId,
+      name: product.Title,
+      image: product.images ? product.images[0]?.url : '',
+      quantity: 1,
+      path: product.Slug ? product.Slug : '',
+      price: product.Price,
+    });
+    
     setLoading(true)
     try {
       addProduct({
-        productId: String(product.id),
-        name: product.name,
-        image: product.images[0].url,
+        productId: product.ProductId,
+        name: product.Title,
+        image: product.images ? product.images[0]?.url : '',
         quantity: 1,
-        path: product.slug ? product.slug : '',
-        price: product.price.value,
+        path: product.Slug ? product.Slug : '',
+        price: product.Price,
       })
       openSidebar()
       setLoading(false)
@@ -47,16 +56,16 @@ const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
 
   return (
     <div className={className}>
-      {process.env.COMMERCE_PRODUCT_OPTIONS_ENABLED && (
+      {/* {process.env.COMMERCE_PRODUCT_OPTIONS_ENABLED && (
         <ProductOptions
           options={product.options}
           selectedOptions={selectedOptions}
           setSelectedOptions={setSelectedOptions}
         />
-      )}
+      )} */}
       <Text
         className="pb-4 break-words w-full max-w-xl"
-        html={product.descriptionHtml || product.description}
+        html={product.ContentHtml || product.Content}
       />
       <div className="flex flex-row justify-between items-center">
         <Rating value={4} />
@@ -70,11 +79,13 @@ const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
             className={s.button}
             onClick={addToCart}
             loading={loading}
-            disabled={variant?.availableForSale === false}
+            disabled={false}
+            // disabled={variant?.availableForSale === false}
           >
-            {variant?.availableForSale === false
+            {'Add To Cart'}
+            {/* {variant?.availableForSale === false
               ? 'Not Available'
-              : 'Add To Cart'}
+              : 'Add To Cart'} */}
           </Button>
         )}
       </div>

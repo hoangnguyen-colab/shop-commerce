@@ -7,8 +7,8 @@ import Image, { ImageProps } from 'next/image'
 import WishlistButton from '@components/wishlist/WishlistButton'
 import ProductTag from '../ProductTag'
 import usePrice from '@lib/use-price'
+import { baseCurrencyCode } from '@utils/CurrencyCode'
 
-const baseCurrencyCode = "VND"
 interface Props {
   className?: string
   product: Product
@@ -38,7 +38,7 @@ const ProductCard: FC<Props> = ({
   )
 
   return (
-    <Link href={`/product/${product.ProductId}`}>
+    <Link href={`/product/${product.Slug}`}>
       <a className={rootClassName}>
         {variant === 'slim' && (
           <>
@@ -58,7 +58,9 @@ const ProductCard: FC<Props> = ({
             ) : (
               <Image
                 quality="85"
-                src={"https://cdn11.bigcommerce.com/s-qfzerv205w/images/stencil/original/products/116/512/Men-Jacket-Front-Black__15466.1603283963.png"}
+                src={
+                  'https://cdn11.bigcommerce.com/s-qfzerv205w/images/stencil/original/products/116/512/Men-Jacket-Front-Black__15466.1603283963.png'
+                }
                 alt={product.Title || 'Product Image'}
                 height={320}
                 width={320}
@@ -78,6 +80,10 @@ const ProductCard: FC<Props> = ({
                 </h3>
                 <div className={s.price}>
                   {`${product.Price} ${baseCurrencyCode}`}
+                  {/* {`${product.Price.toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'VND',
+                  })} ${baseCurrencyCode}`} */}
                 </div>
               </div>
             )}
@@ -93,17 +99,19 @@ const ProductCard: FC<Props> = ({
                   layout="responsive"
                   {...imgProps}
                 />
-                ) : (
-                  <Image
-                    alt={product.Title || 'Product Image'}
-                    className={s.productImage}
-                    src={"https://cdn11.bigcommerce.com/s-qfzerv205w/images/stencil/original/products/116/512/Men-Jacket-Front-Black__15466.1603283963.png"}
-                    height={540}
-                    width={540}
-                    quality="85"
-                    layout="responsive"
-                    {...imgProps}
-                  />
+              ) : (
+                <Image
+                  alt={product.Title || 'Product Image'}
+                  className={s.productImage}
+                  src={
+                    'https://cdn11.bigcommerce.com/s-qfzerv205w/images/stencil/original/products/116/512/Men-Jacket-Front-Black__15466.1603283963.png'
+                  }
+                  height={540}
+                  width={540}
+                  quality="85"
+                  layout="responsive"
+                  {...imgProps}
+                />
               )}
             </div>
           </>
@@ -114,6 +122,10 @@ const ProductCard: FC<Props> = ({
             <ProductTag
               name={product.Title}
               price={`${product.Price} ${baseCurrencyCode}`}
+              // price={`${product.Price.toLocaleString('en-US', {
+              //   style: 'currency',
+              //   currency: 'VND',
+              // })} ${baseCurrencyCode}`}
             />
             <div className={s.imageContainer}>
               {product?.images ? (
@@ -131,7 +143,9 @@ const ProductCard: FC<Props> = ({
                 <Image
                   alt={product.Title || 'Product Image'}
                   className={s.productImage}
-                  src={"https://cdn11.bigcommerce.com/s-qfzerv205w/images/stencil/original/products/116/512/Men-Jacket-Front-Black__15466.1603283963.png"}
+                  src={
+                    'https://cdn11.bigcommerce.com/s-qfzerv205w/images/stencil/original/products/116/512/Men-Jacket-Front-Black__15466.1603283963.png'
+                  }
                   height={540}
                   width={540}
                   quality="85"

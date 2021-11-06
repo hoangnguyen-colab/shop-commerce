@@ -35,6 +35,7 @@ export type Product = {
   ProductId: string
   ProductCode: string
   Title: string
+  Summary: string
   Content: string
   ContentHtml?: string
   Quantity: number

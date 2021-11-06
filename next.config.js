@@ -4,7 +4,8 @@ module.exports = {
     domains: ['cdn11.bigcommerce.com'],
   },
   env: {
-    API_BASE_URL: "https://salemodel.somee.com/",
+    API_BASE_URL: "https://salemodel.somee.com/api/",
+    API_LOCAL: "https://localhost:44335/api/",
     COMMERCE_CART_ENABLED: true,
     COMMERCE_PRODUCT_OPTIONS_ENABLED: false,
     COMMERCE_WISHLIST_ENABLED: false,

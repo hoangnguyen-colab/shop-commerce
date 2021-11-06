@@ -1,48 +1,48 @@
-import type {
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType,
-} from 'next'
 import { useRouter } from 'next/router'
 import { ProductView } from '@components/product'
-import { data } from '@lib/data/product'
-import { productDetail } from '@network/API'
+import { productDetailSlug } from '@network/API'
+import { useEffect, useState } from 'react'
+import type { Product } from '@lib/types/product'
 
-export async function getServerSideProps({
-  params,
-}: GetServerSidePropsContext<{ slug: string }>) {
-  // const { products: relatedProducts } = await allProductsPromise
-  // const product = data.products.find((item: { slug: any }) => item.slug === params!.slug);
-
-  let product = null
-
-  const resp = await productDetail(params!.slug);
-  const data = resp.data!.Data?.product
-  if (data) {
-    product = data;
-  }
-  
-  if (!product) {
-    return {
-      redirect: {
-        destination: '/404',
-        permanent: false,
-      },
-    }
-  }
-
-  return {
-    props: {
-      product,
-    },
-  }
-}
-export default function Slug({
-  product,
-}: // relatedProducts,
-InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Slug() {
   const router = useRouter()
+  const { slug } = router.query // object destructuring
 
-  return router.isFallback ? (
+  const [loading, setLoading] = useState(true)
+  const [product, setProduct] = useState<Product>({})
+
+  useEffect(() => {
+    getProductDetail()
+  }, [])
+
+  const getProductDetail = () => {
+    productDetailSlug(slug!.toString())
+      .then((resp) => {
+        const data = resp.data.Data
+        if (data) {
+          setLoading(false);
+          setProduct(data.product);
+        } else {
+          return {
+            redirect: {
+              destination: '/404',
+              permanent: false,
+            },
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        return {
+          redirect: {
+            destination: '/404',
+            permanent: false,
+          },
+        }
+      })
+  }
+
+  return loading ? (
     <h1>Loading...</h1>
   ) : (
     // <ProductView product={product} relatedProducts={relatedProducts} />

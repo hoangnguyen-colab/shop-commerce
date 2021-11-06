@@ -4,23 +4,24 @@ import { NextSeo } from 'next-seo'
 import s from './ProductView.module.css'
 import { FC } from 'react'
 import type { Product } from '@lib/types/product'
-import usePrice from '@lib/use-price';
+import usePrice from '@lib/use-price'
 import { WishlistButton } from '@components/wishlist'
 import { ProductSlider, ProductCard } from '@components/product'
 import { Container, Text } from '@components/ui'
 import ProductSidebar from '../ProductSidebar'
 import ProductTag from '../ProductTag'
+import { baseCurrencyCode } from '@utils/CurrencyCode'
 interface ProductViewProps {
   product: Product
   relatedProducts?: Product[]
 }
 
 const ProductView: FC<ProductViewProps> = ({ product, relatedProducts }) => {
-  const { price } = usePrice({
-    amount: product.price.value,
-    baseAmount: product.price.retailPrice,
-    currencyCode: product.price.currencyCode!,
-  })
+  // const { price } = usePrice({
+  //   amount: product.price.value,
+  //   baseAmount: product.price.retailPrice,
+  //   currencyCode: product.price.currencyCode!,
+  // })
 
   return (
     <>
@@ -28,12 +29,12 @@ const ProductView: FC<ProductViewProps> = ({ product, relatedProducts }) => {
         <div className={cn(s.root, 'fit')}>
           <div className={cn(s.main, 'fit')}>
             <ProductTag
-              name={product.name}
-              price={`${price} ${product.price?.currencyCode}`}
+              name={product.Title}
+              price={`${product.Price} ${baseCurrencyCode}`}
               fontSize={32}
             />
-            <div className={s.sliderContainer}>
-              <ProductSlider key={product.id}>
+            {/* <div className={s.sliderContainer}>
+              <ProductSlider key={product.ProductId}>
                 {product.images.map((image, i) => (
                   <div key={image.url} className={s.imageContainer}>
                     <Image
@@ -48,14 +49,14 @@ const ProductView: FC<ProductViewProps> = ({ product, relatedProducts }) => {
                   </div>
                 ))}
               </ProductSlider>
-            </div>
-            {process.env.COMMERCE_WISHLIST_ENABLED && (
+            </div> */}
+            {/* {process.env.COMMERCE_WISHLIST_ENABLED && (
               <WishlistButton
                 className={s.wishlistButton}
                 productId={product.id}
                 variant={product.variants[0]}
               />
-            )}
+            )} */}
           </div>
 
           <ProductSidebar product={product} className={s.sidebar} />
@@ -64,42 +65,35 @@ const ProductView: FC<ProductViewProps> = ({ product, relatedProducts }) => {
         <section className="py-12 px-6 mb-10">
           <Text variant="sectionHeading">Related Products</Text>
           <div className={s.relatedProductsGrid}>
-            {relatedProducts && relatedProducts.map((p) => (
-              <div
-                key={p.path}
-                className="animated fadeIn bg-accent-0 border border-accent-2"
-              >
-                <ProductCard
-                  noNameTag
-                  product={p}
-                  key={p.path}
-                  variant="simple"
-                  className="animated fadeIn"
-                  imgProps={{
-                    width: 300,
-                    height: 300,
-                  }}
-                />
-              </div>
-            ))}
+            {relatedProducts &&
+              relatedProducts.map((p) => (
+                <div
+                  key={p.Path}
+                  className="animated fadeIn bg-accent-0 border border-accent-2"
+                >
+                  <ProductCard
+                    noNameTag
+                    product={p}
+                    key={p.Path}
+                    variant="simple"
+                    className="animated fadeIn"
+                    imgProps={{
+                      width: 300,
+                      height: 300,
+                    }}
+                  />
+                </div>
+              ))}
           </div>
         </section>
       </Container>
       <NextSeo
-        title={product.name}
-        description={product.description}
+        title={product.Title}
+        description={product.Summary}
         openGraph={{
           type: 'website',
-          title: product.name,
-          description: product.description,
-          images: [
-            {
-              url: product.images[0]?.url!,
-              width: 800,
-              height: 600,
-              alt: product.name,
-            },
-          ],
+          title: product.Title,
+          description: product.Summary,
         }}
       />
     </>
