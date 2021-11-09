@@ -17,6 +17,13 @@ export function formatPrice({
   return formatCurrency.format(amount)
 }
 
+export function formatNormalPrice(price: number | null | undefined) {
+  return price ? price.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'VND',
+  }) : price;
+}
+
 export function formatVariantPrice({
   amount,
   baseAmount,

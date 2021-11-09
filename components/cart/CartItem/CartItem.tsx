@@ -8,6 +8,8 @@ import { useUI } from '@components/ui/context'
 import type { CartItemBody } from '@lib/types/cart'
 import Quantity from '@components/ui/Quantity'
 import { useCart } from '@contexts/CartContext'
+import { formatNormalPrice } from '@lib/use-price'
+import { baseCurrencyCode } from '@utils/CurrencyCode'
 
 type ItemOption = {
   name: string
@@ -47,8 +49,9 @@ const CartItem = ({
     // setRemoving(true)
     // try {
     // } catch (error) {
-    //   setRemoving(false)
+
     // }
+    // setRemoving(false)
   }
 
   // TODO: Add a type for this
@@ -122,8 +125,7 @@ const CartItem = ({
         </div>
         <div className="flex flex-col justify-between space-y-2 text-sm">
           <span>
-            {currencyCode}
-            {item.price}
+            {formatNormalPrice(item.price)} {baseCurrencyCode}
           </span>
         </div>
       </div>

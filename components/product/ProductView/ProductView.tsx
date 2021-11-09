@@ -4,7 +4,7 @@ import { NextSeo } from 'next-seo'
 import s from './ProductView.module.css'
 import { FC } from 'react'
 import type { Product, ProductMeta } from '@lib/types/product'
-import usePrice from '@lib/use-price'
+import {formatNormalPrice} from '@lib/use-price'
 import { WishlistButton } from '@components/wishlist'
 import { ProductSlider, ProductCard } from '@components/product'
 import { Container, Text } from '@components/ui'
@@ -30,6 +30,8 @@ const ProductView: FC<ProductViewProps> = ({
   //   currencyCode: product.price.currencyCode!,
   // })
 
+  
+
   return (
     <>
       <Container className="max-w-none w-full" clean>
@@ -37,7 +39,7 @@ const ProductView: FC<ProductViewProps> = ({
           <div className={cn(s.main, 'fit')}>
             <ProductTag
               name={product?.Title || "Product"}
-              price={`${product?.Price} ${baseCurrencyCode}`}
+              price={`${formatNormalPrice(product?.Price)} ${baseCurrencyCode}`}
               fontSize={32}
             />
             <div className={s.sliderContainer}>

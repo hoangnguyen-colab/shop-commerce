@@ -4,16 +4,16 @@ import s from '@components/checkout/ShippingView/ShippingView.module.css'
 import Button from '@components/ui/Button'
 import { useUI } from '@components/ui/context'
 
-const PaymentMethodView: FC = () => {
+const ShippingView: FC = () => {
 
   return (
     <div>
       <div className="px-4 sm:px-6 flex-1">
         <h2 className="pt-1 pb-8 text-2xl font-semibold tracking-wide cursor-pointer inline-block">
-          Shipping
+          Infomation
         </h2>
         <div>
-          <div className="flex flex-row my-3 items-center">
+          {/* <div className="flex flex-row my-3 items-center">
             <input className={s.radio} type="radio" />
             <span className="ml-3 text-sm">Same as billing address</span>
           </div>
@@ -22,7 +22,7 @@ const PaymentMethodView: FC = () => {
             <span className="ml-3 text-sm">
               Use a different shipping address
             </span>
-          </div>
+          </div> */}
           <hr className="border-accent-2 my-6" />
           <div className="grid gap-3 grid-flow-row grid-cols-12">
             <div className={cn(s.fieldset, 'col-span-6')}>
@@ -59,18 +59,18 @@ const PaymentMethodView: FC = () => {
           <div className={s.fieldset}>
             <label className={s.label}>Country/Region</label>
             <select className={s.select}>
-              <option>Hong Kong</option>
+              <option>Viet Nam</option>
             </select>
           </div>
         </div>
       </div>
-      <div className="sticky z-20 bottom-0 w-full right-0 left-0 py-12 bg-accent-0 border-t border-accent-2 px-6">
+      {/* <div className="sticky z-20 bottom-0 w-full right-0 left-0 py-12 bg-accent-0 border-t border-accent-2 px-6">
         <Button Component="a" width="100%" variant="ghost">
           Continue
         </Button>
-      </div>
+      </div> */}
     </div>
   )
 }
 
-export default PaymentMethodView
+export default ShippingView

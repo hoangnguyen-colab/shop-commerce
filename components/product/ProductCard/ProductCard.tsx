@@ -6,7 +6,7 @@ import s from './ProductCard.module.css'
 import Image, { ImageProps } from 'next/image'
 import WishlistButton from '@components/wishlist/WishlistButton'
 import ProductTag from '../ProductTag'
-import usePrice from '@lib/use-price'
+import {formatNormalPrice} from '@lib/use-price'
 import { baseCurrencyCode } from '@utils/CurrencyCode'
 
 interface Props {
@@ -79,11 +79,7 @@ const ProductCard: FC<Props> = ({
                   <span>{product.Title}</span>
                 </h3>
                 <div className={s.price}>
-                  {`${product.Price} ${baseCurrencyCode}`}
-                  {/* {`${product.Price.toLocaleString('en-US', {
-                    style: 'currency',
-                    currency: 'VND',
-                  })} ${baseCurrencyCode}`} */}
+                  {`${formatNormalPrice(product.Price)} ${baseCurrencyCode}`}
                 </div>
               </div>
             )}
@@ -121,11 +117,7 @@ const ProductCard: FC<Props> = ({
           <>
             <ProductTag
               name={product.Title}
-              price={`${product.Price} ${baseCurrencyCode}`}
-              // price={`${product.Price.toLocaleString('en-US', {
-              //   style: 'currency',
-              //   currency: 'VND',
-              // })} ${baseCurrencyCode}`}
+              price={`${formatNormalPrice(product.Price)} ${baseCurrencyCode}`}
             />
             <div className={s.imageContainer}>
               {product?.MetaTitle ? (

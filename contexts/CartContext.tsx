@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useState, useContext } from 'react'
+import { ReactNode, createContext, useState, useContext, useEffect } from 'react'
 import type { CartItemBody } from '@lib/types/cart'
 
 interface ContextProviderProps {
@@ -16,6 +16,22 @@ export const CartContext = createContext<ContextProps | undefined>(undefined)
 
 export const CartProvider = ({ children }: ContextProviderProps) => {
   const [cartItems, setCartItems] = useState<CartItemBody[]>([])
+
+  useEffect(() => {
+    const cartLocal = localStorage.getItem('@cnw-cart');
+    if (cartLocal && typeof cartLocal === 'string') {
+      try {
+        const cartData = JSON.parse(cartLocal);
+        setCartItems(cartData);
+      } catch (e) {
+      }
+    }
+    // setCartItems([]);
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('@cnw-cart', JSON.stringify(cartItems));
+  }, [cartItems])
 
   const addProduct = (item: CartItemBody) => {
     const cart = [...cartItems]
