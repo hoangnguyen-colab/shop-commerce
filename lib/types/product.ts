@@ -43,8 +43,16 @@ export type Product = {
   Sku?: string
   Slug?: string
   Path?: string
-  Image: string,
+  MetaTitle: string
   images: ProductImage[]
+}
+
+export type ProductMeta = {
+  Content: string
+  Id: string | number
+  KeyMeta: string | number
+  ProductId: string
+  Url: string
 }
 
 export type SearchProductsBody = {
@@ -79,12 +87,11 @@ export type ProductsSchema<T extends ProductTypes = ProductTypes> = {
   }
 }
 
-export type GetAllProductPathsOperation<
-  T extends ProductTypes = ProductTypes
-> = {
-  data: { products: Pick<T['product'], 'path'>[] }
-  variables: { first?: number }
-}
+export type GetAllProductPathsOperation<T extends ProductTypes = ProductTypes> =
+  {
+    data: { products: Pick<T['product'], 'path'>[] }
+    variables: { first?: number }
+  }
 
 export type GetAllProductsOperation<T extends ProductTypes = ProductTypes> = {
   data: { products: T['product'][] }

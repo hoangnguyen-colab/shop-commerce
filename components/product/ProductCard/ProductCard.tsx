@@ -45,10 +45,10 @@ const ProductCard: FC<Props> = ({
             <div className={s.header}>
               <span>{product.Title}</span>
             </div>
-            {product?.images ? (
+            {product?.MetaTitle ? (
               <Image
                 quality="85"
-                src={product.images[0]?.url || placeholderImg}
+                src={product.MetaTitle || placeholderImg}
                 alt={product.Title || 'Product Image'}
                 height={320}
                 width={320}
@@ -88,11 +88,11 @@ const ProductCard: FC<Props> = ({
               </div>
             )}
             <div className={s.imageContainer}>
-              {product?.images ? (
+              {product?.MetaTitle ? (
                 <Image
                   alt={product.Title || 'Product Image'}
                   className={s.productImage}
-                  src={product.images[0]?.url || placeholderImg}
+                  src={product.MetaTitle || placeholderImg}
                   height={540}
                   width={540}
                   quality="85"
@@ -128,11 +128,11 @@ const ProductCard: FC<Props> = ({
               // })} ${baseCurrencyCode}`}
             />
             <div className={s.imageContainer}>
-              {product?.images ? (
+              {product?.MetaTitle ? (
                 <Image
                   alt={product.Title || 'Product Image'}
                   className={s.productImage}
-                  src={product.images[0]?.url || placeholderImg}
+                  src={product.MetaTitle || placeholderImg}
                   height={540}
                   width={540}
                   quality="85"

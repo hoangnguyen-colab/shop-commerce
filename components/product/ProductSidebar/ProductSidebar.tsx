@@ -11,7 +11,7 @@ import {
 import { useCart } from '@contexts/CartContext'
 
 interface ProductSidebarProps {
-  product: Product
+  product: Product | null
   className?: string
 }
 
@@ -28,24 +28,15 @@ const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
   // const variant = getProductVariant(product, selectedOptions)
 
   const addToCart = async () => {
-    console.log({
-      productId: product.ProductId,
-      name: product.Title,
-      image: product.images ? product.images[0]?.url : '',
-      quantity: 1,
-      path: product.Slug ? product.Slug : '',
-      price: product.Price,
-    });
-    
     setLoading(true)
     try {
       addProduct({
-        productId: product.ProductId,
-        name: product.Title,
-        image: product.images ? product.images[0]?.url : '',
+        productId: product!.ProductId,
+        name: product!.Title,
+        image: product!.MetaTitle,
         quantity: 1,
-        path: product.Slug ? product.Slug : '',
-        price: product.Price,
+        path: product?.Slug ? product.Slug : '',
+        price: product!.Price,
       })
       openSidebar()
       setLoading(false)
@@ -65,7 +56,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
       )} */}
       <Text
         className="pb-4 break-words w-full max-w-xl"
-        html={product.ContentHtml || product.Content}
+        html={product?.ContentHtml || product?.Content}
       />
       <div className="flex flex-row justify-between items-center">
         <Rating value={4} />

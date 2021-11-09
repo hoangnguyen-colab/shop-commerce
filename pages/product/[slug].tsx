@@ -2,14 +2,15 @@ import { useRouter } from 'next/router'
 import { ProductView } from '@components/product'
 import { productDetailSlug } from '@network/API'
 import { useEffect, useState } from 'react'
-import type { Product } from '@lib/types/product'
+import type { Product, ProductMeta } from '@lib/types/product'
 
 export default function Slug() {
   const router = useRouter()
   const { slug } = router.query // object destructuring
 
   const [loading, setLoading] = useState(true)
-  const [product, setProduct] = useState<Product>({})
+  const [product, setProduct] = useState<Product | null>(null)
+  const [productMeta, setProductMeta] = useState<ProductMeta[] | null>(null)
 
   useEffect(() => {
     getProductDetail()
@@ -22,6 +23,7 @@ export default function Slug() {
         if (data) {
           setLoading(false);
           setProduct(data.product);
+          setProductMeta(data.product_meta);
         } else {
           return {
             redirect: {
@@ -46,7 +48,7 @@ export default function Slug() {
     <h1>Loading...</h1>
   ) : (
     // <ProductView product={product} relatedProducts={relatedProducts} />
-    <ProductView product={product} />
+    <ProductView product={product} productMeta={productMeta}/>
   )
 }
 

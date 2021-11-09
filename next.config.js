@@ -1,7 +1,7 @@
 
 module.exports = {
   images: {
-    domains: ['cdn11.bigcommerce.com'],
+    domains: ['cdn11.bigcommerce.com', 'product.hstatic.net'],
   },
   env: {
     API_BASE_URL: "https://salemodel.somee.com/api/",
