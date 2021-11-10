@@ -1,6 +1,6 @@
 import React from 'react'
 import ShippingPageView from '@components/checkout/page/ShippingPageView'
-function checkout() {
+function Checkout() {
   return (
     <div>
       <ShippingPageView />
@@ -8,4 +8,4 @@ function checkout() {
   )
 }
 
-export default checkout
+export default Checkout

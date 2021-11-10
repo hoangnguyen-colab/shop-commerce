@@ -10,7 +10,7 @@ import { useCartItems } from '@contexts/CartContext'
 import { useRouter } from 'next/router'
 import {io} from 'socket.io-client'
 
-const checkout: FC = () => {
+const Checkout: FC = () => {
   const cartItems = useCartItems()
   const router = useRouter()
   let socket: any = io(process.env.REALTIME_BASE_URL!)
@@ -84,4 +84,4 @@ const checkout: FC = () => {
   )
 }
 
-export default checkout
+export default Checkout
