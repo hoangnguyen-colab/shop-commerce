@@ -6,6 +6,8 @@ module.exports = {
   env: {
     API_BASE_URL: "https://salemodel.somee.com/api/",
     API_LOCAL: "https://localhost:44335/api/",
+    REALTIME_LOCAL: "http://localhost:5000",
+    REALTIME_BASE_URL: "http://localhost:5000",
     COMMERCE_CART_ENABLED: true,
     COMMERCE_PRODUCT_OPTIONS_ENABLED: false,
     COMMERCE_WISHLIST_ENABLED: false,
