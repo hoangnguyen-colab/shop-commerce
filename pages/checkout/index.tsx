@@ -13,7 +13,7 @@ import {io} from 'socket.io-client'
 const Checkout: FC = () => {
   const cartItems = useCartItems()
   const router = useRouter()
-  let socket: any = io(process.env.REALTIME_BASE_URL!)
+  let socket: any = io(process.env.REALTIME_BASE_URL || "https://cnw-realtime.herokuapp.com")
 
   useEffect(() => {
     // if (socket) {
