@@ -18,7 +18,7 @@ export const CartProvider = ({ children }: ContextProviderProps) => {
   const [cartItems, setCartItems] = useState<CartItemBody[]>([])
 
   useEffect(() => {
-    const cartLocal = localStorage.getItem('@cnw-cart');
+    const cartLocal = localStorage.getItem('@cnw/cart');
     if (cartLocal && typeof cartLocal === 'string') {
       try {
         const cartData = JSON.parse(cartLocal);
@@ -30,7 +30,7 @@ export const CartProvider = ({ children }: ContextProviderProps) => {
   }, [])
 
   useEffect(() => {
-    localStorage.setItem('@cnw-cart', JSON.stringify(cartItems));
+    localStorage.setItem('@cnw/cart', JSON.stringify(cartItems));
   }, [cartItems])
 
   const addProduct = (item: CartItemBody) => {
