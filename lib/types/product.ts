@@ -43,7 +43,8 @@ export type Product = {
   Sku?: string
   Slug?: string
   Path?: string
-  MetaTitle: string
+  MetaTitle?: string
+  ProductImage: string
   images: ProductImage[]
 }
 

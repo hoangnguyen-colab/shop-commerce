@@ -63,7 +63,7 @@ const ProductView: FC<ProductViewProps> = ({
                 <div className={s.imageContainer}>
                   <Image
                     className={s.img}
-                    src={product?.MetaTitle || DefaultImgUrl}
+                    src={product?.ProductImage || DefaultImgUrl}
                     alt={product?.Summary || 'Product Image'}
                     width={600}
                     height={600}

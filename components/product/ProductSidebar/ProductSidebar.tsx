@@ -33,7 +33,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
       addProduct({
         productId: product!.ProductId,
         name: product!.Title,
-        image: product!.MetaTitle,
+        image: product!.ProductImage,
         quantity: 1,
         path: product?.Slug ? product.Slug : '',
         price: product!.Price,
