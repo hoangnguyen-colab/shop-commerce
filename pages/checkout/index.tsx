@@ -14,18 +14,24 @@ import { useCartItems } from '@contexts/CartContext'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { orderSubmit } from '@network/API'
 
 const schema = yup
   .object({
-    name: yup.string().required(),
-    address: yup.string().required(),
-    phone: yup.string().required(),
+    customerName: yup.string().required(),
+    customerAddress: yup.string().required(),
+    customerPhone: yup.string().required(),
   })
   .required()
 
 const errorStyle = {
   color: 'red',
   marginTop: '5px',
+}
+
+interface CartRequestItem {
+  productId: string
+  quantity: number
 }
 
 const Checkout: FC = () => {
@@ -36,12 +42,6 @@ const Checkout: FC = () => {
   } = useForm({
     resolver: yupResolver(schema),
   })
-  const onSubmit = (data: any) => {
-    console.log(data)
-    if (socket) {
-      socket.emit('order-placed-client', JSON.stringify(cartItems))
-    }
-  }
   const cartItems = useCartItems()
   const router = useRouter()
   let socket: any = io(
@@ -57,12 +57,30 @@ const Checkout: FC = () => {
     // }
   }, [])
 
-  const handleCheckout = () => {
-    if (socket) {
-      socket.emit('order-placed-client', JSON.stringify(cartItems))
-    }
-  }
+  const onSubmit = (data: any) => {
+    const cartReq: CartRequestItem[] = []
+    cartItems.forEach((item) => {
+      cartReq.push({ productId: item!.productId, quantity: item!.quantity })
+    })
 
+    const params = {
+      ...data,
+      items: cartReq,
+    }
+
+    orderSubmit(params)
+      .then((resp) => {
+        const data = resp.data
+        if (data?.Success) {
+          if (socket) {
+            socket.emit('order-placed-client', "")
+          }
+        }
+      })
+      .catch((error) => {
+        console.log('error', error)
+      })
+  }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="px-4 sm:px-6 flex-1">
@@ -84,18 +102,35 @@ const Checkout: FC = () => {
                   <hr className="border-accent-2 my-6" />
                   <div className={ship.fieldset}>
                     <label className={ship.label}>Tên khách hàng*</label>
-                    <input className={ship.input} {...register('name')} />
-                    {errors?.name && <p style={errorStyle}>{errors?.name?.message}</p>}
+                    <input
+                      className={ship.input}
+                      {...register('customerName')}
+                    />
+                    {errors?.customerName && (
+                      <p style={errorStyle}>{errors?.customerName?.message}</p>
+                    )}
                   </div>
                   <div className={ship.fieldset}>
                     <label className={ship.label}>Địa chỉ nhận hàng*</label>
-                    <input className={ship.input} {...register('address')} />
-                    {errors?.address && <p style={errorStyle}>{errors?.address?.message}</p>}
+                    <input
+                      className={ship.input}
+                      {...register('customerAddress')}
+                    />
+                    {errors?.customerAddress && (
+                      <p style={errorStyle}>
+                        {errors?.customerAddress?.message}
+                      </p>
+                    )}
                   </div>
                   <div className={ship.fieldset}>
                     <label className={ship.label}>Số điện thoại*</label>
-                    <input className={ship.input} {...register('phone')} />
-                    {errors?.phone && <p style={errorStyle}>{errors?.phone?.message}</p>}
+                    <input
+                      className={ship.input}
+                      {...register('customerPhone')}
+                    />
+                    {errors?.customerPhone && (
+                      <p style={errorStyle}>{errors?.customerPhone?.message}</p>
+                    )}
                   </div>
                   <div className={ship.fieldset}>
                     <label className={ship.label}>Email</label>

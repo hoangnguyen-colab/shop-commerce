@@ -3,6 +3,7 @@ const Endpoint = {
   LOGIN: 'auth/signin',
   PRODUCT: 'products',
   PRODUCT_DETAIL: 'products/detail',
+  ORDER: 'order',
 };
 
 export default Endpoint;
