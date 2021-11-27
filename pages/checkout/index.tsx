@@ -73,7 +73,7 @@ const Checkout: FC = () => {
         const data = resp.data
         if (data?.Success) {
           if (socket) {
-            socket.emit('order-placed-client', "")
+            socket.emit('order-placed-client', data.Data?.orderId)
           }
         }
       })
