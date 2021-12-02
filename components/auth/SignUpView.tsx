@@ -3,85 +3,55 @@ import { validate } from 'email-validator'
 import { Info } from '@components/icons'
 import { useUI } from '@components/ui/context'
 import { Logo, Button, Input } from '@components/ui'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { customerSignUp } from '@network/API'
 
-interface Props { }
+interface Props {}
 
 const schema = yup
   .object({
-    username: yup.string().required(),
-    password: yup.string().required(),
+    username: yup.string().required("Tên không thể trống"),
+    password: yup.string().required("Mật khẩu không thể trống"),
     displayName: yup.string().required(),
     address: yup.string(),
-    mobile: yup.string(),
+    mobile: yup.string().required(),
   })
   .required()
-
 
 const SignUpView: FC<Props> = () => {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   })
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [displayName, setDisplayName] = useState('')
-  const [address, setAddress] = useState('')
-  const [mobile, setMobile] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [dirty, setDirty] = useState(false)
   const [disabled, setDisabled] = useState(false)
 
   const { setModalView, closeModal } = useUI()
-  const handleSignup = async (e: React.SyntheticEvent<EventTarget>) => {
-    e.preventDefault()
-
-    if (!dirty && !disabled) {
-      setDirty(true)
-      handleValidation()
-    }
-
-    try {
-      setLoading(true)
-      setMessage('')
-      // await signup({
-      //   email,
-      //   firstName,
-      //   lastName,
-      //   password,
-      // })
-      setLoading(false)
-      closeModal()
-    } catch ({ errors }) {
-      setMessage(errors[0]?.message)
-      setLoading(false)
-    }
-  }
-
-  const handleValidation = useCallback(() => {
-    // Test for Alphanumeric password
-    // const validPassword = /^(?=.*[a-zA-Z])(?=.*[0-9])/.test(password)
-
-    // Unable to send form unless fields are valid.
-    // if (dirty) {
-    //   setDisabled(!validate(email) || password.length < 7 || !validPassword)
-    // }
-  }, [password, dirty])
 
   const onSubmit = (data: any) => {
-    console.log("data", data);
+    setLoading(true)
+    setMessage('')
 
+    customerSignUp(data) //call api
+      .then((resp) => {
+        //process
+        console.log(resp.data)
+        setLoading(false)
+      })
+      .catch((error) => {
+        console.log(error)
+        setMessage('Error')
+        setLoading(false)
+      })
   }
-
-  useEffect(() => {
-    handleValidation()
-  }, [handleValidation])
 
   return (
     <form
@@ -95,11 +65,42 @@ const SignUpView: FC<Props> = () => {
         {message && (
           <div className="text-red border border-red p-3">{message}</div>
         )}
-        <Input placeholder="Username" {...register('username')} onChange={setUsername} />
-        <Input placeholder="Họ Tên" {...register('displayName')} onChange={setDisplayName} />
-        <Input type="password" placeholder="Password" {...register('password')} onChange={setPassword} />
-        <Input type="tel" placeholder="Số điện thoại" {...register('mobile')} onChange={setMobile} />
-        <Input placeholder="Địa chỉ"{...register('address')} onChange={setAddress} />
+        <Controller
+          name="username"
+          control={control}
+          render={({ field }) => <Input placeholder="Username" {...field} />}
+        />
+        <p>{errors.username && <text>{errors.username.message}</text>}</p>
+        <Controller
+          name="displayName"
+          control={control}
+          render={({ field }) => <Input placeholder="Họ Tên" {...field} />}
+        />
+        <p>{errors.displayName && <text>{errors.displayName.message}</text>}</p>
+        <Controller
+          name="password"
+          control={control}
+          render={({ field }) => (
+            <Input type="password" placeholder="Mật Khẩu" {...field} />
+          )}
+        />
+        <p>{errors.password && <text>{errors.password.message}</text>}</p>
+        <Controller
+          name="mobile"
+          control={control}
+          render={({ field }) => (
+            <Input type="tel" placeholder="Số điện thoại" {...field} />
+          )}
+        />
+        <p>{errors.mobile && <text>{errors.mobile.message}</text>}</p>
+        <Controller
+          name="address"
+          control={control}
+          render={({ field }) => (
+            <Input placeholder="Địa chỉ" {...field} />
+          )}
+        />
+        <p>{errors.address && <text>{errors.address.message}</text>}</p>
         {/* <span className="text-accent-8">
           <span className="inline-block align-middle ">
             <Info width="15" height="15" />

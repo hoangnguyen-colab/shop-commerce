@@ -2,7 +2,7 @@ import { FC, useEffect, useState, useCallback } from 'react'
 import { Logo, Button, Input } from '@components/ui'
 import { useUI } from '@components/ui/context'
 import { validate } from 'email-validator'
-import { login } from '@network/API'
+import { customerLogIn } from '@network/API'
 import Cookie from 'js-cookie'
 import { useAuth } from '@contexts/AuthContext'
 
@@ -21,39 +21,35 @@ const LoginView: FC<Props> = () => {
   const handleLogin = async (e: React.SyntheticEvent<EventTarget>) => {
     e.preventDefault()
 
-    if (!dirty && !disabled) {
-      setDirty(true)
-      handleValidation()
+    setLoading(true)
+    setMessage('')
+
+    const body = {
+      username: username,
+      password: password,
     }
 
-    try {
-      setLoading(true)
-      setMessage('')
-
-      const body = {
-        username: username,
-        password: password,
-      }
-
-      const resp = await login(body)
-      const token = resp.data?.responseData?.accessToken;
-      if (token) {
-        Cookie.set('token', token, { expires: 7 })
-        setAuthenticated(true)
-        closeModal();
-      } else {
-        setMessage('Check your informations and try again')
-      }
-
-      setLoading(false)
-      setDisabled(false)
-    } catch ({ errors }) {
-      console.log(errors)
-      setMessage('Error orcured')
-      // setMessage(errors[0]?.message);
-      setLoading(false)
-      setDisabled(false)
-    }
+    customerLogIn(body) //call api
+      .then((resp) => {
+        //process
+        if (resp.data?.Data) {
+          const user = resp.data.Data.account
+          Cookie.set('token', user.CustomerId, { expires: 7 })
+          localStorage.setItem('@cnw/user', JSON.stringify(user))
+          setAuthenticated(true)
+          closeModal()
+        } else {
+          setMessage(resp.data.Message)
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        setMessage('Error')
+      })
+      .finally(() => {
+        setLoading(false)
+        setDisabled(false)
+      })
   }
 
   const handleValidation = useCallback(() => {
@@ -81,13 +77,14 @@ const LoginView: FC<Props> = () => {
       <div className="flex flex-col space-y-3">
         {message && (
           <div className="text-red border border-red p-3">
-            {message}. Did you {` `}
+            {message}
+            {/* . Did you {` `}
             <a
               className="text-accent-9 inline font-bold hover:underline cursor-pointer"
               onClick={() => setModalView('FORGOT_VIEW')}
             >
               forgot your password?
-            </a>
+            </a> */}
           </div>
         )}
         <Input
