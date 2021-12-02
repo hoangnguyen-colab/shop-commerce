@@ -18,4 +18,6 @@ const getInstance = (baseUrl: string) => {
   return instance;
 };
 
-export const apiClient = getInstance(process.env.API_BASE_URL!);
+//API_LOCAL
+//API_BASE_URL
+export const apiClient = getInstance(process.env.API_LOCAL!);
