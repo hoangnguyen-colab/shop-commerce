@@ -3,8 +3,8 @@ import Endpoints from '@network/Endpoint'
 
 const { get, post, put } = apiClient
 
-export const productList = (page: number, record: number) =>
-get(`${Endpoints.PRODUCT}?page=${page}&record=${record}`)
+export const productList = (search: string, sort: string, page: number, record: number) =>
+get(`${Endpoints.PRODUCT}?search=${search}&sort=${sort}&page=${page}&record=${record}`)
 export const productDetail = (productId: string) =>
 get(`${Endpoints.PRODUCT_DETAIL}?id=${productId}`)
 export const productDetailSlug = (slug: string) =>

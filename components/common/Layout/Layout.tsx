@@ -102,11 +102,11 @@ const Layout: FC<Props> = ({
       href: `/shop`,
     },
     {
-      label: 'About',
+      label: 'Về tôi',
       href: `/about`,
     },
     {
-      label: 'Contact',
+      label: 'Liên hệ',
       href: `/contact`,
     },
   ]

@@ -23,15 +23,15 @@ interface DropdownMenuProps {
 
 const LINKS = [
   {
-    name: 'My Orders',
+    name: 'Đơn hàng',
     href: '/orders',
   },
   {
-    name: 'My Profile',
+    name: 'Tài khoản',
     href: '/profile',
   },
   {
-    name: 'My Cart',
+    name: 'Giỏ hàng',
     href: '/cart',
   },
 ]
@@ -107,7 +107,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({ open = false }) => {
                 }}
               >
                 <div>
-                  Theme: <strong>{theme}</strong>{' '}
+                  Giao diện: <strong>{theme}</strong>{' '}
                 </div>
                 <div className="ml-3">
                   {theme == 'dark' ? (
@@ -123,7 +123,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({ open = false }) => {
                 className={cn(s.link, 'border-t border-accent-2 mt-4')}
                 onClick={() => handleLogout()}
               >
-                Logout
+                Đăng xuất
               </a>
             </li>
           </ul>

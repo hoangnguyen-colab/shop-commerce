@@ -14,10 +14,10 @@ import getSlug from '@lib/get-slug'
 import rangeMap from '@lib/range-map'
 
 const SORT = {
-  'trending-desc': 'Trending',
-  'latest-desc': 'Latest arrivals',
-  'price-asc': 'Price: Low to high',
-  'price-desc': 'Price: High to low',
+  'trending-desc': 'Mua nhiều',
+  'latest-desc': 'Mới nhất',
+  'price-asc': 'Giá: Thấp đến cao',
+  'price-desc': 'Giá: Cao đến thấp',
 }
 
 import {
@@ -34,6 +34,7 @@ interface ProductData {
 export default function Search() {
   const [activeFilter, setActiveFilter] = useState('')
   const [toggleFilter, setToggleFilter] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const router = useRouter()
   const { asPath, locale } = router
@@ -60,18 +61,22 @@ export default function Search() {
   const [productData, setProductData] = useState<Product[] | null>(null)
 
   useEffect(() => {
-    getProductList();
+    getProductList()
   }, [])
 
   const getProductList = () => {
-    productList(0, 21)
+    setLoading(true)
+    productList('', '', 0, 21)
       .then((resp) => {
-        if(resp.data?.Data) {
-          setProductData(resp.data?.Data);
+        if (resp.data?.Data) {
+          setProductData(resp.data?.Data)
         }
       })
       .catch((error) => {
         console.log(error)
+      })
+      .finally(() => {
+        setLoading(false)
       })
   }
 
@@ -149,7 +154,7 @@ export default function Search() {
                             'block lg:inline-block px-4 py-2 lg:p-0 lg:my-2 lg:mx-4'
                           }
                         >
-                          All Categories
+                          Phân loại
                         </a>
                       </Link>
                     </li>
@@ -250,7 +255,7 @@ export default function Search() {
                             'block lg:inline-block px-4 py-2 lg:p-0 lg:my-2 lg:mx-4'
                           }
                         >
-                          All Designers
+                          {/* All Designers */}
                         </a>
                       </Link>
                     </li>
@@ -333,22 +338,7 @@ export default function Search() {
               )}
             </div>
           )} */}
-          {(productData) ? (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {productData.map((product: Product, index) => (
-                <ProductCard
-                  variant="simple"
-                  key={index.toString() + product?.ProductCode}
-                  className="animated fadeIn"
-                  product={product}
-                  imgProps={{
-                    width: 480,
-                    height: 480,
-                  }}
-                />
-              ))}
-            </div>
-          ) : (
+          {loading ? (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {rangeMap(12, (i) => (
                 <Skeleton key={i}>
@@ -356,7 +346,23 @@ export default function Search() {
                 </Skeleton>
               ))}
             </div>
-          )}{' '}
+          ) : (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {productData &&
+                productData.map((product: Product, index) => (
+                  <ProductCard
+                    variant="simple"
+                    key={index.toString() + product?.ProductCode}
+                    className="animated fadeIn"
+                    product={product}
+                    imgProps={{
+                      width: 480,
+                      height: 480,
+                    }}
+                  />
+                ))}
+            </div>
+          )}
         </div>
 
         {/* Sort */}
@@ -372,7 +378,7 @@ export default function Search() {
                   aria-haspopup="true"
                   aria-expanded="true"
                 >
-                  {sort ? SORT[sort as keyof typeof SORT] : 'Relevance'}
+                  {sort ? SORT[sort as keyof typeof SORT] : 'Sắp xếp'}
                   <svg
                     className="-mr-1 ml-2 h-5 w-5"
                     xmlns="http://www.w3.org/2000/svg"

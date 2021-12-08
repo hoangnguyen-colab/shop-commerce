@@ -1,16 +1,18 @@
-import { FC } from 'react'
+import { FC, ReactNode } from 'react'
 import cn from 'classnames'
 import s from '@components/checkout/ShippingView/ShippingView.module.css'
-import Button from '@components/ui/Button'
-import { useUI } from '@components/ui/context'
 
-const ShippingView: FC = () => {
+interface ShippingViewProp {
+  errors: any
+  register: any
+}
 
+const ShippingView = ({ errors, register }: ShippingViewProp) => {
   return (
     <div>
       <div className="px-4 sm:px-6 flex-1">
         <h2 className="pt-1 pb-8 text-2xl font-semibold tracking-wide cursor-pointer inline-block">
-          Infomation
+          Thông tin đặt hàng
         </h2>
         <div>
           {/* <div className="flex flex-row my-3 items-center">
@@ -24,7 +26,7 @@ const ShippingView: FC = () => {
             </span>
           </div> */}
           <hr className="border-accent-2 my-6" />
-          <div className="grid gap-3 grid-flow-row grid-cols-12">
+          {/* <div className="grid gap-3 grid-flow-row grid-cols-12">
             <div className={cn(s.fieldset, 'col-span-6')}>
               <label className={s.label}>First Name</label>
               <input className={s.input} />
@@ -33,34 +35,39 @@ const ShippingView: FC = () => {
               <label className={s.label}>Last Name</label>
               <input className={s.input} />
             </div>
+          </div> */}
+          <div className={s.fieldset}>
+            <label className={s.label}>Tên khách hàng*</label>
+            <input className={s.input} {...register('name')} />
+            <p>{errors?.name?.message}</p>
           </div>
           <div className={s.fieldset}>
-            <label className={s.label}>Company (Optional)</label>
-            <input className={s.input} />
+            <label className={s.label}>Địa chỉ nhận hàng*</label>
+            <input className={s.input} {...register('address')} />
+            <p>{errors?.address?.message}</p>
           </div>
           <div className={s.fieldset}>
-            <label className={s.label}>Street and House Number</label>
-            <input className={s.input} />
+            <label className={s.label}>Số điện thoại*</label>
+            <input className={s.input} {...register('phone')} />
+            <p>{errors?.phone?.message}</p>
           </div>
           <div className={s.fieldset}>
-            <label className={s.label}>Apartment, Suite, Etc. (Optional)</label>
-            <input className={s.input} />
+            <label className={s.label}>Email</label>
+            <input className={s.input} {...register('email')} />
           </div>
           <div className="grid gap-3 grid-flow-row grid-cols-12">
             <div className={cn(s.fieldset, 'col-span-6')}>
-              <label className={s.label}>Postal Code</label>
+              <label className={s.label}>Mã bưu điện</label>
               <input className={s.input} />
             </div>
             <div className={cn(s.fieldset, 'col-span-6')}>
-              <label className={s.label}>City</label>
-              <input className={s.input} />
+              <label className={s.label}>Thành phố</label>
+              <select className={s.select}>
+                <option>Hà Nội</option>
+                <option>Hồ Chí Minh</option>
+                <option>Đà Nẵng</option>
+              </select>
             </div>
-          </div>
-          <div className={s.fieldset}>
-            <label className={s.label}>Country/Region</label>
-            <select className={s.select}>
-              <option>Viet Nam</option>
-            </select>
           </div>
         </div>
       </div>

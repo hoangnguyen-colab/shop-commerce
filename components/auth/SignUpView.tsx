@@ -12,11 +12,11 @@ interface Props {}
 
 const schema = yup
   .object({
-    username: yup.string().required("Tên không thể trống"),
+    username: yup.string().required("Tên đăng nhập không thể trống"),
     password: yup.string().required("Mật khẩu không thể trống"),
-    displayName: yup.string().required(),
+    displayName: yup.string("Tên người dùng không thể trống"),
     address: yup.string(),
-    mobile: yup.string().required(),
+    mobile: yup.string(),
   })
   .required()
 

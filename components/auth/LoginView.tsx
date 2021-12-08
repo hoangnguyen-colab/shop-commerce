@@ -5,10 +5,28 @@ import { validate } from 'email-validator'
 import { customerLogIn } from '@network/API'
 import Cookie from 'js-cookie'
 import { useAuth } from '@contexts/AuthContext'
+import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 
 interface Props {}
 
+const schema = yup
+  .object({
+    username: yup.string().required('Tên không thể trống'),
+    password: yup.string().required('Mật khẩu không thể trống'),
+  })
+  .required()
+
 const LoginView: FC<Props> = () => {
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  })
   const { setAuthenticated } = useAuth()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -18,22 +36,15 @@ const LoginView: FC<Props> = () => {
   const [disabled, setDisabled] = useState(false)
   const { setModalView, closeModal } = useUI()
 
-  const handleLogin = async (e: React.SyntheticEvent<EventTarget>) => {
-    e.preventDefault()
-
+  const handleLogin = (data: any) => {
     setLoading(true)
     setMessage('')
 
-    const body = {
-      username: username,
-      password: password,
-    }
-
-    customerLogIn(body) //call api
+    customerLogIn(data)
       .then((resp) => {
-        //process
         if (resp.data?.Data) {
-          const user = resp.data.Data.account
+          const user = resp.data.Data.account;
+          
           Cookie.set('token', user.CustomerId, { expires: 7 })
           localStorage.setItem('@cnw/user', JSON.stringify(user))
           setAuthenticated(true)
@@ -68,7 +79,7 @@ const LoginView: FC<Props> = () => {
 
   return (
     <form
-      onSubmit={handleLogin}
+      onSubmit={handleSubmit(handleLogin)}
       className="w-80 flex flex-col justify-between p-3"
     >
       <div className="flex justify-center pb-12 ">
@@ -87,18 +98,34 @@ const LoginView: FC<Props> = () => {
             </a> */}
           </div>
         )}
-        <Input
+        <Controller
+          name="username"
+          control={control}
+          render={({ field }) => (
+            <Input type="text" placeholder="Username" {...field} />
+          )}
+        />
+        <p>{errors.username && <text>{errors.username.message}</text>}</p>
+        <Controller
+          name="password"
+          control={control}
+          render={({ field }) => (
+            <Input type="text" placeholder="Password" {...field} />
+          )}
+        />
+        <p>{errors.username && <text>{errors.username.message}</text>}</p>
+        {/* <Input
           type="text"
           placeholder="Username"
           onChange={setUsername}
           required
-        />
+        /> 
         <Input
           type="password"
           placeholder="Password"
           onChange={setPassword}
           required
-        />
+        /> */}
 
         <Button
           variant="slim"

@@ -31,7 +31,7 @@ const CartSidebarView: FC = () => {
             <Bag className="absolute" />
           </span>
           <h2 className="pt-6 text-2xl font-bold tracking-wide text-center">
-            Your cart is empty
+            Giỏ hàng trống
           </h2>
           <p className="text-accent-3 px-10 text-center pt-2">
             Biscuit oat cake wafer icing ice cream tiramisu pudding cupcake.
@@ -61,7 +61,7 @@ const CartSidebarView: FC = () => {
           <div className="px-4 sm:px-6 flex-1">
             <Link href="/cart">
               <Text variant="sectionHeading" onClick={handleClose}>
-                My Cart
+                Giỏ hàng của tôi
               </Text>
             </Link>
             <ul className={s.lineItemsList}>
@@ -82,32 +82,32 @@ const CartSidebarView: FC = () => {
 
           <div className="flex-shrink-0 px-6 py-6 sm:px-6 sticky z-20 bottom-0 w-full right-0 left-0 bg-accent-0 border-t text-sm">
             <ul className="pb-2">
-              <li className="flex justify-between py-1">
+              {/* <li className="flex justify-between py-1">
                 <span>Subtotal</span>
-                {/* <span>{subTotal}</span> */}
-              </li>
+                <span>{subTotal}</span> 
+              </li> */}
+              {/* <li className="flex justify-between py-1">
+                <span>Thuế</span>
+                <span>Tính ở thanh toán</span>
+              </li> */}
               <li className="flex justify-between py-1">
-                <span>Taxes</span>
-                <span>Calculated at checkout</span>
-              </li>
-              <li className="flex justify-between py-1">
-                <span>Shipping</span>
+                <span>Vận chuyển</span>
                 <span className="font-bold tracking-wide">FREE</span>
               </li>
             </ul>
             <div className="flex justify-between border-t border-accent-2 py-3 font-bold mb-2">
-              <span>Total</span>
+              <span>Tổng</span>
               {/* <span>{total}</span> */}
             </div>
             <div>
               {process.env.COMMERCE_CUSTOMCHECKOUT_ENABLED ? (
                 <Button Component="a" width="100%" onClick={goToCheckout}>
-                  Proceed to Checkout 
+                  Thanh Toán
                   {/* ({total}) */}
                 </Button>
               ) : (
                 <Button href="/checkout" Component="a" width="100%">
-                  Proceed to Checkout
+                  Thanh Toán
                 </Button>
               )}
             </div>
