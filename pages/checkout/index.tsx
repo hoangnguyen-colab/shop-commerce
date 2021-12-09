@@ -1,6 +1,6 @@
 import cn from 'classnames'
 import Link from 'next/link'
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useState } from 'react'
 import CartItem from '@components/cart/CartItem'
 import { Button, Text } from '@components/ui'
 import { useUI } from '@components/ui/context'
@@ -18,9 +18,9 @@ import { orderSubmit } from '@network/API'
 
 const schema = yup
   .object({
-    customerName: yup.string().required(),
-    customerAddress: yup.string().required(),
-    customerPhone: yup.string().required(),
+    customerName: yup.string().required('Tên người nhận không thể trống'),
+    customerAddress: yup.string().required('Địa chỉ nhận hàng không thể trống'),
+    customerPhone: yup.string().required('SĐT không thể trống'),
   })
   .required()
 
@@ -44,42 +44,57 @@ const Checkout: FC = () => {
   })
   const cartItems = useCartItems()
   const router = useRouter()
+  const [loading, setLoading] = useState<boolean>(false)
+  const [checkoutDone, setCheckoutDone] = useState<boolean>(false)
+  const [orderId, setOrderId] = useState<string>('')
   let socket: any = io(
     process.env.REALTIME_BASE_URL || 'https://cnw-realtime.herokuapp.com'
   )
 
-  useEffect(() => {
-    // if (socket) {
-    //   socket.on('order-placed-admin', (message: string) => {
-    //     console.log('order-placed-admin', message)
-    //     // setMessages((messages) => [...messages, message]);
-    //   })
-    // }
-  }, [])
+  // useEffect(() => {
+  // if (socket) {
+  //   socket.on('order-placed-admin', (message: string) => {
+  //     console.log('order-placed-admin', message)
+  //     // setMessages((messages) => [...messages, message]);
+  //   })
+  // }
+  //}, [])
 
   const onSubmit = (data: any) => {
-    const cartReq: CartRequestItem[] = []
-    cartItems.forEach((item) => {
-      cartReq.push({ productId: item!.productId, quantity: item!.quantity })
-    })
+    try {
+      setLoading(true)
+      const cartReq: CartRequestItem[] = []
+      cartItems.forEach((item) => {
+        cartReq.push({ productId: item!.productId, quantity: item!.quantity })
+      })
 
-    const params = {
-      ...data,
-      items: cartReq,
-    }
+      const params = {
+        ...data,
+        items: cartReq,
+      }
 
-    orderSubmit(params)
-      .then((resp) => {
-        const data = resp.data
-        if (data?.Success) {
-          if (socket) {
-            socket.emit('order-placed-client', data.Data?.orderId)
+      orderSubmit(params)
+        .then((resp) => {
+          const data = resp.data
+          if (data?.Success) {
+            setCheckoutDone(true)
+            setOrderId(data.Data?.orderId)
+            if (socket) {
+              socket.emit('order-placed-client', data.Data?.orderId)
+            }
           }
-        }
-      })
-      .catch((error) => {
-        console.log('error', error)
-      })
+        })
+        .catch((error) => {
+          console.log('error', error)
+        })
+        .finally(() => {
+          setLoading(false)
+        })
+    } catch (error) {
+      console.log('error', error)
+    } finally {
+      setLoading(false)
+    }
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -103,6 +118,7 @@ const Checkout: FC = () => {
                   <div className={ship.fieldset}>
                     <label className={ship.label}>Tên khách hàng*</label>
                     <input
+                      disabled={checkoutDone}
                       className={ship.input}
                       {...register('customerName')}
                     />
@@ -113,6 +129,7 @@ const Checkout: FC = () => {
                   <div className={ship.fieldset}>
                     <label className={ship.label}>Địa chỉ nhận hàng*</label>
                     <input
+                      disabled={checkoutDone}
                       className={ship.input}
                       {...register('customerAddress')}
                     />
@@ -125,6 +142,7 @@ const Checkout: FC = () => {
                   <div className={ship.fieldset}>
                     <label className={ship.label}>Số điện thoại*</label>
                     <input
+                      disabled={checkoutDone}
                       className={ship.input}
                       {...register('customerPhone')}
                     />
@@ -134,16 +152,20 @@ const Checkout: FC = () => {
                   </div>
                   <div className={ship.fieldset}>
                     <label className={ship.label}>Email</label>
-                    <input className={ship.input} {...register('email')} />
+                    <input
+                      disabled={checkoutDone}
+                      className={ship.input}
+                      {...register('email')}
+                    />
                   </div>
                   <div className="grid gap-3 grid-flow-row grid-cols-12">
                     <div className={cn(ship.fieldset, 'col-span-6')}>
                       <label className={ship.label}>Mã bưu điện</label>
-                      <input className={ship.input} />
+                      <input disabled={checkoutDone} className={ship.input} />
                     </div>
                     <div className={cn(ship.fieldset, 'col-span-6')}>
                       <label className={ship.label}>Thành phố</label>
-                      <select className={ship.select}>
+                      <select disabled={checkoutDone} className={ship.select}>
                         <option>Hà Nội</option>
                         <option>Hồ Chí Minh</option>
                         <option>Đà Nẵng</option>
@@ -157,32 +179,63 @@ const Checkout: FC = () => {
         </div>
       </div>
 
-      <div className="flex-shrink-0 px-6 py-6 sm:px-6 z-20 bottom-0 w-full right-0 left-0 bg-accent-0 border-t text-sm">
-        {/* sticky  */}
-        <ul className="pb-2">
-          <li className="flex justify-between py-1">
-            <span>Subtotal</span>
-            <span>{'subTotal'}</span>
-          </li>
-          <li className="flex justify-between py-1">
-            <span>Taxes</span>
-            <span>Calculated at checkout</span>
-          </li>
-          <li className="flex justify-between py-1">
-            <span>Shipping</span>
-            <span className="font-bold tracking-wide">FREE</span>
-          </li>
-        </ul>
-        <div className="flex justify-between border-t border-accent-2 py-3 font-bold mb-2">
-          <span>Total</span>
-          <span>{'total'}</span>
+      {checkoutDone ? (
+        <div className="px-4 sm:px-6 flex-1 center">
+          <div className="px-4 sm:px-6 flex-1">
+            <h1 className="pt-1 pb-8 text-2xl font-semibold tracking-wide inline-block">
+              Đặt hàng thành công
+            </h1>
+          </div>
+          <div className="px-4 sm:px-6 flex-1">
+            <h4 className="pt-1 pb-8 text-2xl font-semibold tracking-wide inline-block">
+              Mã đơn hàng: {orderId}
+            </h4>
+          </div>
+
+          <div>
+            <Button
+              Component="button"
+              width="100%"
+              onClick={() => router.push(`/order/${orderId}`)}
+            >
+              Theo dõi đơn hàng
+            </Button>
+          </div>
         </div>
-        <div>
-          <Button Component="button" width="100%" type="submit">
-            Confirm Purchase
-          </Button>
+      ) : (
+        <div className="flex-shrink-0 px-6 py-6 sm:px-6 z-20 bottom-0 w-full right-0 left-0 bg-accent-0 border-t text-sm">
+          {/* sticky  */}
+          <ul className="pb-2">
+            <li className="flex justify-between py-1">
+              <span>Subtotal</span>
+              <span>{'subTotal'}</span>
+            </li>
+            <li className="flex justify-between py-1">
+              <span>Taxes</span>
+              <span>Calculated at checkout</span>
+            </li>
+            <li className="flex justify-between py-1">
+              <span>Shipping</span>
+              <span className="font-bold tracking-wide">FREE</span>
+            </li>
+          </ul>
+          <div className="flex justify-between border-t border-accent-2 py-3 font-bold mb-2">
+            <span>Total</span>
+            <span>{'total'}</span>
+          </div>
+          <div>
+            <Button
+              Component="button"
+              width="100%"
+              type="submit"
+              disabled={loading}
+              loading={loading}
+            >
+              Mua Hàng
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </form>
   )
 }

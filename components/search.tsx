@@ -61,11 +61,6 @@ export default function Search() {
   const query = filterQuery({ sort })
 
   useEffect(() => {
-    console.log("slctdCateId", slctdCateId);
-    
-  }, [slctdCateId])
-
-  useEffect(() => {
     setSearch(typeof q === 'string' ? q : '')
   }, [q])
 
@@ -77,7 +72,7 @@ export default function Search() {
 
   useEffect(() => {
     getProductList()
-  }, [sort])
+  }, [sort, slctdCateId])
 
   const getCategoryList = () => {
     categoryList('', 'Title+asc', 1, 20)
