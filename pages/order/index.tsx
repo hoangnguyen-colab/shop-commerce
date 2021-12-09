@@ -8,13 +8,11 @@ import { getListOrder } from '@network/API'
 import { Row, Col, Table, Space } from 'antd'
 import { isEmpty } from 'lodash'
 import Link from 'next/link'
-import { FormOutlined } from '@ant-design/icons'
 
 function Order() {
   const [listOrder, setListOrder] = useState<any>([])
   const getListOfOrder = () => {
     getListOrder().then((resp) => {
-      console.log(`resp`, resp)
       setListOrder(resp?.data?.Data)
     })
   }
@@ -57,9 +55,10 @@ function Order() {
     {
       title: 'Action',
       key: 'action',
+      // eslint-disable-next-line react/display-name
       render: (text: any, record: any) => (
         <Space size="middle">
-          <Link href={`order/${record.OrdersId}`}>Chi tiếtz</Link>
+          <Link href={`order/${record.OrdersId}`}>Chi tiết</Link>
         </Space>
       ),
     },
