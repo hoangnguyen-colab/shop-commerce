@@ -3,6 +3,7 @@ import { Container } from '@components/ui'
 import { OrderDetailWrapper } from './OrderStyle'
 import { Row, Col, Image } from 'antd'
 import { formatNormalPrice } from '@lib/use-price'
+import { ORDER_STATUS } from '@lib/const/orderStatus'
 interface OrderDetail {
   detail?: any
   items?: any
@@ -10,6 +11,12 @@ interface OrderDetail {
 }
 
 const OrderDetail: React.FC<OrderDetail> = ({ detail, items, status }) => {
+
+  const getStatusName = (id: number) => {
+    return ORDER_STATUS.find(_ => _.id === id)?.name;
+  }
+
+
   return (
     <Container className="max-w-none w-full" clean>
       {/* <div className="px-4 sm:px-6 flex-1">
@@ -34,17 +41,7 @@ const OrderDetail: React.FC<OrderDetail> = ({ detail, items, status }) => {
             Mã đơn hàng: {detail?.orderId}
           </Col>
           <Col className="order-status" xs={24}>
-            Trạng thái:
-            {
-              {
-                1: <span> Đang xử lý</span>,
-                2: <span> Đang giao hàng</span>,
-                3: <span> Đã nhận</span>,
-                4: <span> Hủy</span>,
-                5: <span> Hoàn trả</span>,
-                6: <span> Lỗi</span>,
-              }[status]
-            }
+            Trạng thái: {getStatusName(status)}
           </Col>
         </Row>
         <Row style={{ borderBottom: '1px solid #a4a4a4', padding: '1rem' }}>
@@ -62,7 +59,7 @@ const OrderDetail: React.FC<OrderDetail> = ({ detail, items, status }) => {
           </Col>
           {items &&
             items.map((item: any, index: any) => (
-              <div className="flex flex-row space-x-4 py-4">
+              <div className="flex flex-row space-x-4 py-4" key={index.toString()}>
                 <div className="w-24 h-24 bg-violet relative overflow-hidden z-0">
                   <img
                     width={150}
