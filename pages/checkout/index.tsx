@@ -61,40 +61,43 @@ const Checkout: FC = () => {
   //}, [])
 
   const onSubmit = (data: any) => {
-    try {
-      setLoading(true)
-      const cartReq: CartRequestItem[] = []
-      cartItems.forEach((item) => {
-        cartReq.push({ productId: item!.productId, quantity: item!.quantity })
-      })
+    if (!checkoutDone) {
+      try {
+        setLoading(true)
+        const cartReq: CartRequestItem[] = []
+        cartItems.forEach((item) => {
+          cartReq.push({ productId: item!.productId, quantity: item!.quantity })
+        })
 
-      const params = {
-        ...data,
-        items: cartReq,
-      }
+        const params = {
+          ...data,
+          items: cartReq,
+        }
 
-      orderSubmit(params)
-        .then((resp) => {
-          const data = resp.data
-          if (data?.Success) {
-            setCheckoutDone(true)
-            setOrderId(data.Data?.orderId)
-            if (socket) {
-              socket.emit('order-placed-client', data.Data?.orderId)
+        orderSubmit(params)
+          .then((resp) => {
+            const data = resp.data
+            if (data?.Success) {
+              setCheckoutDone(true)
+              setOrderId(data.Data?.orderId)
+              if (socket) {
+                socket.emit('order-placed-client', data.Data?.orderId)
+              }
             }
-          }
-        })
-        .catch((error) => {
-          console.log('error', error)
-        })
-        .finally(() => {
-          setLoading(false)
-        })
-    } catch (error) {
-      console.log('error', error)
-    } finally {
-      setLoading(false)
+          })
+          .catch((error) => {
+            console.log('error', error)
+          })
+          .finally(() => {
+            setLoading(false)
+          })
+      } catch (error) {
+        console.log('error', error)
+      } finally {
+        setLoading(false)
+      }
     }
+
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
