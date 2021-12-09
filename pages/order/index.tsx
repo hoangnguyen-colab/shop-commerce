@@ -13,7 +13,7 @@ import { FormOutlined } from '@ant-design/icons'
 function Order() {
   const [listOrder, setListOrder] = useState<any>([])
   const getListOfOrder = () => {
-   getListOrder().then((resp) => {
+    getListOrder().then((resp) => {
       console.log(`resp`, resp)
       setListOrder(resp?.data?.Data)
     })
@@ -67,25 +67,25 @@ function Order() {
   return (
     <Container>
       <ListOrderWrapper>
-      <Text variant="pageHeading">Danh sách đơn hàng của bạn</Text>
-      {!isEmpty(listOrder) ? (
-        <Table columns={columns} dataSource={listOrder} />
-      ) : (
-        <>
-          <div className="flex-1 p-24 flex flex-col justify-center items-center ">
-            <span className="border border-dashed border-secondary rounded-full flex items-center justify-center w-16 h-16 p-12 bg-primary text-primary">
-              <Bag className="absolute" />
-            </span>
-            <h2 className="pt-6 text-2xl font-bold tracking-wide text-center">
-              Bạn chưa có đơn hàng nào
-            </h2>
-            <p className="text-accent-6 px-10 text-center pt-2">
-              Biscuit oat cake wafer icing ice cream tiramisu pudding cupcake.
-            </p>
-          </div>
-        </>
-      )}
-    </ListOrderWrapper>
+        <Text variant="pageHeading">Danh sách đơn hàng của bạn</Text>
+        {(listOrder && listOrder.length > 0) ? (
+          <Table columns={columns} dataSource={listOrder} />
+        ) : (
+          <>
+            <div className="flex-1 p-24 flex flex-col justify-center items-center ">
+              <span className="border border-dashed border-secondary rounded-full flex items-center justify-center w-16 h-16 p-12 bg-primary text-primary">
+                <Bag className="absolute" />
+              </span>
+              <h2 className="pt-6 text-2xl font-bold tracking-wide text-center">
+                Bạn chưa có đơn hàng nào
+              </h2>
+              <p className="text-accent-6 px-10 text-center pt-2">
+                Biscuit oat cake wafer icing ice cream tiramisu pudding cupcake.
+              </p>
+            </div>
+          </>
+        )}
+      </ListOrderWrapper>
     </Container>
   )
 }
