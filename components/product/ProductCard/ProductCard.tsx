@@ -6,7 +6,7 @@ import s from './ProductCard.module.css'
 import Image, { ImageProps } from 'next/image'
 import WishlistButton from '@components/wishlist/WishlistButton'
 import ProductTag from '../ProductTag'
-import {formatNormalPrice} from '@lib/use-price'
+import { formatNormalPrice } from '@lib/use-price'
 import { baseCurrencyCode } from '@utils/CurrencyCode'
 
 interface Props {
@@ -43,7 +43,7 @@ const ProductCard: FC<Props> = ({
         {variant === 'slim' && (
           <>
             <div className={s.header}>
-              <span>{product.Title}</span>
+              <span>{product.Title.length > 30 ? product.Title.slice(0, 30) + '...' : product.Title}</span>
             </div>
             {product?.ProductImage ? (
               <Image
@@ -76,7 +76,7 @@ const ProductCard: FC<Props> = ({
             {!noNameTag && (
               <div className={s.header}>
                 <h3 className={s.name}>
-                  <span>{product.Title}</span>
+              <span>{product.Title.length > 30 ? product.Title.slice(0, 30) + '...' : product.Title}</span>
                 </h3>
                 <div className={s.price}>
                   {`${formatNormalPrice(product.Price)} ${baseCurrencyCode}`}

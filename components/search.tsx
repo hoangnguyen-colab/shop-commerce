@@ -3,15 +3,15 @@ import type { SearchPropsType } from '@lib/search-props'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-
+import { Pagination } from 'antd';
 // import { Layout } from '@components/common'
 import { ProductCard } from '@components/product'
 import type { Product } from '@lib/types/product'
 import { Container, Skeleton } from '@components/ui'
 import { productList, categoryList } from '@network/API'
-
 import getSlug from '@lib/get-slug'
 import rangeMap from '@lib/range-map'
+// import 'antd/dist/antd.css';
 
 const SORT = [
   {
@@ -55,8 +55,9 @@ export default function Search() {
   const [search, setSearch] = useState<string>(typeof q === 'string' ? q : '')
   const [slctdCateId, setSlctdCateId] = useState<string>('')
   const [sort, setSort] = useState<string>(SORT[1].query)
-  const [productData, setProductData] = useState<Product[] | null>(null)
+  const [productData, setProductData] = useState<Product[] | null>([])
   const [categories, setCategories] = useState([])
+  const [totalRecord, setTotalRecord] = useState<number>(0);
 
   const query = filterQuery({ sort })
 
@@ -72,7 +73,7 @@ export default function Search() {
 
   useEffect(() => {
     getProductList()
-  }, [sort, slctdCateId])
+  }, [page, sort, slctdCateId])
 
   const getCategoryList = () => {
     categoryList('', 'Title+asc', 1, 20)
@@ -88,10 +89,11 @@ export default function Search() {
 
   const getProductList = () => {
     setLoading(true)
-    productList(search, sort, page, record)
+    productList(search, sort, slctdCateId, page, record)
       .then((resp) => {
         if (resp.data?.Data) {
-          setProductData(resp.data?.Data)
+          setTotalRecord(resp.data?.TotalRecord);
+          setProductData(resp.data?.Data);
         }
       })
       .catch((error) => {
@@ -109,6 +111,16 @@ export default function Search() {
       setToggleFilter(!toggleFilter)
     }
     setActiveFilter(filter)
+  }
+
+  const handleSetSort = (item: any) => {
+    setPage(1);
+    setSort(item)
+  }
+
+  const handleSetCategory = (item: any) => {
+    setPage(1);
+    setSlctdCateId(item)
   }
 
   const CategoryView = () => {
@@ -143,11 +155,10 @@ export default function Search() {
           </span>
         </div>
         <div
-          className={`origin-top-left absolute lg:relative left-0 mt-2 w-full rounded-md shadow-lg lg:shadow-none z-10 mb-10 lg:block ${
-            activeFilter !== 'categories' || toggleFilter !== true
-              ? 'hidden'
-              : ''
-          }`}
+          className={`origin-top-left absolute lg:relative left-0 mt-2 w-full rounded-md shadow-lg lg:shadow-none z-10 mb-10 lg:block ${activeFilter !== 'categories' || toggleFilter !== true
+            ? 'hidden'
+            : ''
+            }`}
         >
           <div className="rounded-sm bg-accent-0 shadow-xs lg:bg-none lg:shadow-none">
             <div
@@ -165,7 +176,7 @@ export default function Search() {
                   )}
                 >
                   <a
-                    onClick={() => setSlctdCateId('')}
+                    onClick={() => handleSetCategory('')}
                     className={
                       'block lg:inline-block px-4 py-2 lg:p-0 lg:my-2 lg:mx-4'
                     }
@@ -185,7 +196,7 @@ export default function Search() {
                       )}
                     >
                       <a
-                        onClick={() => setSlctdCateId(cat.CategoryId)}
+                        onClick={() => handleSetCategory(cat.CategoryId)}
                         className={
                           'block lg:inline-block px-4 py-2 lg:p-0 lg:my-2 lg:mx-4'
                         }
@@ -260,9 +271,8 @@ export default function Search() {
             </span>
           </div>
           <div
-            className={`origin-top-left absolute lg:relative left-0 mt-2 w-full rounded-md shadow-lg lg:shadow-none z-10 mb-10 lg:block ${
-              activeFilter !== 'sort' || toggleFilter !== true ? 'hidden' : ''
-            }`}
+            className={`origin-top-left absolute lg:relative left-0 mt-2 w-full rounded-md shadow-lg lg:shadow-none z-10 mb-10 lg:block ${activeFilter !== 'sort' || toggleFilter !== true ? 'hidden' : ''
+              }`}
           >
             <div className="rounded-sm bg-accent-0 shadow-xs lg:bg-none lg:shadow-none">
               <div
@@ -280,7 +290,7 @@ export default function Search() {
                     )}
                   >
                     <a
-                      onClick={() => setSort(SORT[1].query)}
+                      onClick={() => handleSetSort(SORT[1].query)}
                       className={
                         'block lg:inline-block px-4 py-2 lg:p-0 lg:my-2 lg:mx-4'
                       }
@@ -299,7 +309,7 @@ export default function Search() {
                       )}
                     >
                       <a
-                        onClick={() => setSort(item.query)}
+                        onClick={() => handleSetSort(item.query)}
                         className={
                           'block lg:inline-block px-4 py-2 lg:p-0 lg:my-2 lg:mx-4'
                         }
@@ -372,25 +382,32 @@ export default function Search() {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {productData &&
-              productData.map((product: Product, index) => (
-                <ProductCard
-                  variant="simple"
-                  key={index.toString() + product?.ProductCode}
-                  className="animated fadeIn"
-                  product={product}
-                  imgProps={{
-                    width: 480,
-                    height: 480,
-                  }}
-                />
-              ))}
+          <div>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {productData &&
+                productData.map((product: Product, index) => (
+                  <ProductCard
+                    variant="simple"
+                    key={index.toString() + product?.ProductCode}
+                    className="animated fadeIn"
+                    product={product}
+                    imgProps={{
+                      width: 480,
+                      height: 480,
+                    }}
+                  />
+                ))}
+            </div>
+
+            <Pagination defaultCurrent={page}
+              onChange={(page: number) => setPage(page)}
+              current={page} total={totalRecord} />
           </div>
         )}
       </div>
     )
   }
+
 
   return (
     <Container>
@@ -430,11 +447,10 @@ export default function Search() {
               </span>
             </div>
             <div
-              className={`origin-top-left absolute lg:relative left-0 mt-2 w-full rounded-md shadow-lg lg:shadow-none z-10 mb-10 lg:block ${
-                activeFilter !== 'brands' || toggleFilter !== true
-                  ? 'hidden'
-                  : ''
-              }`}
+              className={`origin-top-left absolute lg:relative left-0 mt-2 w-full rounded-md shadow-lg lg:shadow-none z-10 mb-10 lg:block ${activeFilter !== 'brands' || toggleFilter !== true
+                ? 'hidden'
+                : ''
+                }`}
             >
               <div className="rounded-sm bg-accent-0 shadow-xs lg:bg-none lg:shadow-none">
                 <div

@@ -6,11 +6,12 @@ const { get, post, put } = apiClient
 export const productList = (
   search: string,
   sort: string,
-  page: number,
-  record: number
+  categoryId?: string,
+  page?: number,
+  record?: number
 ) =>
   get(
-    `${Endpoints.PRODUCT}?search=${search}&sort=${sort}&page=${page}&record=${record}`
+    `${Endpoints.PRODUCT}?search=${search}&sort=${sort}&categoryId=${categoryId}&page=${page}&record=${record}`
   )
 export const productDetail = (productId: string) =>
   get(`${Endpoints.PRODUCT_DETAIL}?id=${productId}`)

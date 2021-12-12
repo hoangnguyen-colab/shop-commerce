@@ -1,20 +1,20 @@
 {
-  "title": "Hung Commerce",
+  "title": "CNW Commerce",
   "titleTemplate": "%s",
-  "description": "Hung Commerce",
+  "description": "CNW Commerce",
   "openGraph": {
-    "title": "Hung Commerce",
-    "description": "Hung Commerce",
+    "title": "CNW Commerce",
+    "description": "CNW Commerce",
     "type": "website",
     "locale": "en_IE",
     "url": "/",
-    "site_name": "Hung Commerce",
+    "site_name": "CNW Commerce",
     "images": [
       {
         "url": "/card.png",
         "width": 800,
         "height": 600,
-        "alt": "Hung Commerce"
+        "alt": "CNW Commerce"
       }
     ]
   },
