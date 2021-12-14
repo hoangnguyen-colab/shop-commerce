@@ -24,16 +24,16 @@ interface DropdownMenuProps {
 const LINKS = [
   {
     name: 'Đơn hàng',
-    href: '/orders',
+    href: '/order',
   },
   {
     name: 'Tài khoản',
     href: '/profile',
   },
-  {
-    name: 'Giỏ hàng',
-    href: '/cart',
-  },
+  // {
+  //   name: 'Giỏ hàng',
+  //   href: '/cart',
+  // },
 ]
 
 const DropdownMenu: FC<DropdownMenuProps> = ({ open = false }) => {

@@ -73,7 +73,7 @@ export default function Search() {
 
   useEffect(() => {
     getProductList()
-  }, [page, sort, slctdCateId])
+  }, [search, page, sort, slctdCateId])
 
   const getCategoryList = () => {
     categoryList('', 'Title+asc', 1, 20)
@@ -178,7 +178,7 @@ export default function Search() {
                   <a
                     onClick={() => handleSetCategory('')}
                     className={
-                      'block lg:inline-block px-4 py-2 lg:p-0 lg:my-2 lg:mx-4'
+                      'block lg:inline-block px-4 py-2 lg:p-0 lg:my-2 lg:mx-4 cursor-pointer'
                     }
                   >
                     Phân loại
@@ -198,40 +198,13 @@ export default function Search() {
                       <a
                         onClick={() => handleSetCategory(cat.CategoryId)}
                         className={
-                          'block lg:inline-block px-4 py-2 lg:p-0 lg:my-2 lg:mx-4'
+                          'block lg:inline-block px-4 py-2 lg:p-0 lg:my-2 lg:mx-4 cursor-pointer'
                         }
                       >
                         {cat.Title}
                       </a>
                     </li>
                   ))}
-                {/* {categories && categories.map((cat: any) => (
-                      <li
-                        key={cat.path}
-                        className={cn(
-                          'block text-sm leading-5 text-accent-4 hover:bg-accent-1 lg:hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8',
-                          // {
-                          //   underline: activeCategory?.id === cat.id,
-                          // }
-                        )}
-                      >
-                        <Link
-                          href={{
-                            pathname: getCategoryPath(cat.path, brand),
-                            query,
-                          }}
-                        >
-                          <a
-                            onClick={(e) => handleClick(e, 'categories')}
-                            className={
-                              'block lg:inline-block px-4 py-2 lg:p-0 lg:my-2 lg:mx-4'
-                            }
-                          >
-                            {cat.Title}
-                          </a>
-                        </Link>
-                      </li>
-                    ))} */}
               </ul>
             </div>
           </div>
@@ -249,7 +222,7 @@ export default function Search() {
               <button
                 type="button"
                 onClick={(e) => handleClick(e, 'sort')}
-                className="flex justify-between w-full rounded-sm border border-accent-3 px-4 py-3 bg-accent-0 text-sm leading-5 font-medium text-accent-4 hover:text-accent-5 focus:outline-none focus:border-blue-300 focus:shadow-outline-normal active:bg-accent-1 active:text-accent-8 transition ease-in-out duration-150"
+                className="cursor-pointer flex justify-between w-full rounded-sm border border-accent-3 px-4 py-3 bg-accent-0 text-sm leading-5 font-medium text-accent-4 hover:text-accent-5 focus:outline-none focus:border-blue-300 focus:shadow-outline-normal active:bg-accent-1 active:text-accent-8 transition ease-in-out duration-150"
                 id="options-menu"
                 aria-haspopup="true"
                 aria-expanded="true"
@@ -292,7 +265,7 @@ export default function Search() {
                     <a
                       onClick={() => handleSetSort(SORT[1].query)}
                       className={
-                        'block lg:inline-block px-4 py-2 lg:p-0 lg:my-2 lg:mx-4'
+                        'block lg:inline-block px-4 py-2 lg:p-0 lg:my-2 lg:mx-4 cursor-pointer'
                       }
                     >
                       Sắp Xếp
@@ -330,49 +303,6 @@ export default function Search() {
   const ProductView = () => {
     return (
       <div className="col-span-8 order-3 lg:order-none">
-        {/* {(q || activeCategory || activeBrand) && (
-            <div className="mb-12 transition ease-in duration-75">
-              {data ? (
-                <>
-                  <span
-                    className={cn('animated', {
-                      fadeIn: data.found,
-                      hidden: !data.found,
-                    })}
-                  >
-                    Showing {data.products.length} results{' '}
-                    {q && (
-                      <>
-                        for "<strong>{q}</strong>"
-                      </>
-                    )}
-                  </span>
-                  <span
-                    className={cn('animated', {
-                      fadeIn: !data.found,
-                      hidden: data.found,
-                    })}
-                  >
-                    {q ? (
-                      <>
-                        There are no products that match "<strong>{q}</strong>"
-                      </>
-                    ) : (
-                      <>
-                        There are no products that match the selected category.
-                      </>
-                    )}
-                  </span>
-                </>
-              ) : q ? (
-                <>
-                  Searching for: "<strong>{q}</strong>"
-                </>
-              ) : (
-                <>Searching...</>
-              )}
-            </div>
-          )} */}
         {loading ? (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {rangeMap(12, (i) => (

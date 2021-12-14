@@ -38,6 +38,7 @@ const Checkout: FC = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -47,18 +48,24 @@ const Checkout: FC = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [checkoutDone, setCheckoutDone] = useState<boolean>(false)
   const [orderId, setOrderId] = useState<string>('')
+  const [customerId, setCustomerId] = useState<string>(null)
   let socket: any = io(
     process.env.REALTIME_BASE_URL || 'https://cnw-realtime.herokuapp.com'
   )
 
-  // useEffect(() => {
-  // if (socket) {
-  //   socket.on('order-placed-admin', (message: string) => {
-  //     console.log('order-placed-admin', message)
-  //     // setMessages((messages) => [...messages, message]);
-  //   })
-  // }
-  //}, [])
+  useEffect(() => {
+    const localData = localStorage.getItem('@cnw/user')
+    let user = null
+    if (localData && typeof localData === 'string') {
+      user = JSON.parse(localData!);
+      if (user) {
+        setValue('customerName', user?.DisplayName || "");
+        setValue('customerAddress', user?.Address || "");
+        setValue('customerPhone', user?.Mobile || "");
+        setCustomerId(user?.customerId || "");
+      }
+    }
+  }, [])
 
   const onSubmit = (data: any) => {
     if (!checkoutDone) {
@@ -72,6 +79,7 @@ const Checkout: FC = () => {
         const params = {
           ...data,
           items: cartReq,
+          customerId: customerId,
         }
 
         orderSubmit(params)
@@ -97,8 +105,8 @@ const Checkout: FC = () => {
         setLoading(false)
       }
     }
-
   }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="px-4 sm:px-6 flex-1">
