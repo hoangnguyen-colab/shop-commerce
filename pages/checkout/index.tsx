@@ -15,6 +15,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { orderSubmit } from '@network/API'
+import { formatNormalPrice } from '@lib/use-price'
 
 const schema = yup
   .object({
@@ -48,7 +49,8 @@ const Checkout: FC = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [checkoutDone, setCheckoutDone] = useState<boolean>(false)
   const [orderId, setOrderId] = useState<string>('')
-  const [customerId, setCustomerId] = useState<string>(null)
+  const [customerId, setCustomerId] = useState<string>("")
+  const [total, setTotal] = useState<number>(0)
   let socket: any = io(
     process.env.REALTIME_BASE_URL || 'https://cnw-realtime.herokuapp.com'
   )
@@ -66,6 +68,14 @@ const Checkout: FC = () => {
       }
     }
   }, [])
+
+  useEffect(() => {
+    let total = 0;
+    cartItems.forEach((item) => {
+      total = total + item.price * item.quantity;
+    })
+    setTotal(total);
+  }, [cartItems])
 
   const onSubmit = (data: any) => {
     if (!checkoutDone) {
@@ -217,22 +227,22 @@ const Checkout: FC = () => {
         <div className="flex-shrink-0 px-6 py-6 sm:px-6 z-20 bottom-0 w-full right-0 left-0 bg-accent-0 border-t text-sm">
           {/* sticky  */}
           <ul className="pb-2">
-            <li className="flex justify-between py-1">
+            {/* <li className="flex justify-between py-1">
               <span>Subtotal</span>
               <span>{'subTotal'}</span>
-            </li>
-            <li className="flex justify-between py-1">
+            </li> */}
+            {/* <li className="flex justify-between py-1">
               <span>Taxes</span>
               <span>Calculated at checkout</span>
-            </li>
+            </li> */}
             <li className="flex justify-between py-1">
-              <span>Shipping</span>
-              <span className="font-bold tracking-wide">FREE</span>
+              <span>Vận chuyển</span>
+              <span className="font-bold tracking-wide">Miễn phí</span>
             </li>
           </ul>
           <div className="flex justify-between border-t border-accent-2 py-3 font-bold mb-2">
-            <span>Total</span>
-            <span>{'total'}</span>
+            <span>Tổng</span>
+            <span>{formatNormalPrice(total)} {'đ'}</span>
           </div>
           <div>
             <Button

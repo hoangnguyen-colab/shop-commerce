@@ -14,7 +14,7 @@ const schema = yup
   .object({
     username: yup.string().required("Tên đăng nhập không thể trống"),
     password: yup.string().required("Mật khẩu không thể trống"),
-    displayName: yup.string("Tên người dùng không thể trống"),
+    displayName: yup.string().required("Tên người dùng không thể trống"),
     address: yup.string(),
     mobile: yup.string(),
   })
@@ -42,13 +42,17 @@ const SignUpView: FC<Props> = () => {
 
     customerSignUp(data) //call api
       .then((resp) => {
-        //process
-        console.log(resp.data)
-        setLoading(false)
+        if (resp.data?.Data) {
+          setModalView('LOGIN_VIEW')
+        } else {
+          setMessage(resp.data.Message)
+        }
       })
       .catch((error) => {
         console.log(error)
-        setMessage('Error')
+        setMessage('Đã có lỗi')
+      })
+      .finally(() => {
         setLoading(false)
       })
   }
@@ -117,18 +121,18 @@ const SignUpView: FC<Props> = () => {
             loading={loading}
             disabled={disabled}
           >
-            Sign Up
+            Đăng ký
           </Button>
         </div>
 
         <span className="pt-1 text-center text-sm">
-          <span className="text-accent-7">Do you have an account?</span>
+          <span className="text-accent-7">Đã có tài khoản?</span>
           {` `}
           <a
             className="text-accent-9 font-bold hover:underline cursor-pointer"
             onClick={() => setModalView('LOGIN_VIEW')}
           >
-            Log In
+            Đăng nhập
           </a>
         </span>
       </div>

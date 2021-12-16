@@ -63,19 +63,19 @@ const LoginView: FC<Props> = () => {
       })
   }
 
-  const handleValidation = useCallback(() => {
-    const validPassword = /^(?=.*[a-zA-Z])(?=.*[0-9])/.test(password)
+  // const handleValidation = useCallback(() => {
+  //   const validPassword = /^(?=.*[a-zA-Z])(?=.*[0-9])/.test(password)
 
-    if (dirty) {
-      setDisabled(
-        !username || !password || password.length < 7 || !validPassword
-      )
-    }
-  }, [username, password, dirty])
+  //   if (dirty) {
+  //     setDisabled(
+  //       !username || !password || password.length < 7 || !validPassword
+  //     )
+  //   }
+  // }, [username, password, dirty])
 
-  useEffect(() => {
-    handleValidation()
-  }, [handleValidation])
+  // useEffect(() => {
+  //   handleValidation()
+  // }, [handleValidation])
 
   return (
     <form
@@ -133,16 +133,16 @@ const LoginView: FC<Props> = () => {
           loading={loading}
           disabled={disabled}
         >
-          Log In
+          Đăng nhập
         </Button>
         <div className="pt-1 text-center text-sm">
-          <span className="text-accent-7">Don't have an account?</span>
+          <span className="text-accent-7">Chưa có tài khoản?</span>
           {` `}
           <a
             className="text-accent-9 font-bold hover:underline cursor-pointer"
             onClick={() => setModalView('SIGNUP_VIEW')}
           >
-            Sign Up
+            Đăng ký ngay
           </a>
         </div>
       </div>
