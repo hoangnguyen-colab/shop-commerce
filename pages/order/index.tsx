@@ -22,6 +22,7 @@ function Order() {
       }
     }
   }, [])
+  console.log(`customerId`, customerId)
   const getListOfOrder = () => {
     getListCustomerOrder(customerId).then((resp) => {
       setListOrder(resp?.data?.Data);
@@ -30,7 +31,7 @@ function Order() {
 
   useEffect(() => {
     getListOfOrder()
-  }, [])
+  }, [customerId])
 
   const columns = [
     {
