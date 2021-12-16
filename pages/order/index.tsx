@@ -4,16 +4,27 @@ import React, { useEffect, useState } from 'react'
 import { Container, Text } from '@components/ui'
 import { Bag } from '@components/icons'
 import { ListOrderWrapper } from '@components/order/OrderStyle'
-import { getListOrder } from '@network/API'
+import { getListOrder,getListCustomerOrder } from '@network/API'
 import { Row, Col, Table, Space } from 'antd'
 import { isEmpty } from 'lodash'
 import Link from 'next/link'
-
+import 'antd/dist/antd.css';
 function Order() {
   const [listOrder, setListOrder] = useState<any>([])
+  const [customerId, setCustomerId] = useState<string>('');
+  useEffect(() => {
+    const localData = localStorage.getItem('@cnw/user')
+    let user = null
+    if (localData && typeof localData === 'string') {
+      user = JSON.parse(localData!);
+      if (user) {
+        setCustomerId(user?.CustomerId);
+      }
+    }
+  }, [])
   const getListOfOrder = () => {
-    getListOrder().then((resp) => {
-      setListOrder(resp?.data?.Data)
+    getListCustomerOrder(customerId).then((resp) => {
+      setListOrder(resp?.data?.Data);
     })
   }
 

@@ -21,7 +21,8 @@ export const productDetailSlug = (slug: string) =>
 export const orderSubmit = (params: {}) => post(Endpoints.ORDER, params)
 export const orderDetail = (id: string) =>
   get(`${Endpoints.ORDER}/detail?id=${id}`)
-export const getListOrder = () => get(Endpoints.ORDER)
+export const getListOrder = () => get(Endpoints.ORDER);
+export const getListCustomerOrder = (customerId:string) => get(`${Endpoints.ORDER}?customerId=${customerId}`);
 export const customerSignUp = (params: {}) =>
   post(Endpoints.CUSTOMER_SIGNUP, params)
 export const customerLogIn = (params: {}) =>
